@@ -1,0 +1,11 @@
+# Lazy.nvim plugin directory (will be auto-installed)
+lazy-lock.json
+
+# Neovim runtime
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
