@@ -1,5 +1,4 @@
 -- KRAKENVIM - A modern, modular Neovim configuration
--- Preserving AstroNvim muscle memory with a from-scratch approach
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -19,8 +18,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- CRITICAL: Treesitter 1.0 compatibility shim
--- Must be set VERY early, before any plugin loads
--- Telescope expects ft_to_lang but Treesitter 1.0 removed it
 do
 	local function ensure_ft_to_lang()
 		if vim.treesitter and vim.treesitter.language then
@@ -32,10 +29,8 @@ do
 		end
 	end
 
-	-- Try to set it now
 	ensure_ft_to_lang()
 
-	-- Also set it after plugins load (in case treesitter overwrites)
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "LazyDone",
 		once = true,
@@ -43,7 +38,6 @@ do
 	})
 end
 
--- Set leaders before lazy (CRITICAL: must be before any plugins load)
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
@@ -86,8 +80,6 @@ require("lazy").setup({
 })
 
 -- Load persisted colorscheme IMMEDIATELY after lazy.setup()
--- This happens BEFORE VimEnter (which triggers alpha dashboard)
--- Since all colorscheme plugins have lazy=false, they're already loaded
 do
 	local cs = require("config.colorscheme")
 	local saved = cs.get_saved_colorscheme()

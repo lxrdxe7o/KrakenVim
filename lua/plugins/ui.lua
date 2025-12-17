@@ -1,8 +1,8 @@
 -- UI plugins (dashboard, statusline, bufferline, notifications, etc.)
--- Note: Colorscheme plugins are now in lua/plugins/colorscheme.lua
+-- Note: Colorscheme plugins are in lua/plugins/colorscheme.lua
 
 return {
-	-- Alpha: Dashboard (with custom header from user.lua)
+	-- Alpha: Dashboard
 	{
 		"goolord/alpha-nvim",
 		event = "VimEnter",

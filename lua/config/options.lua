@@ -47,11 +47,11 @@ opt.clipboard = "unnamedplus"
 -- Completion
 opt.completeopt = { "menu", "menuone", "noselect" }
 
--- Diagnostics (from astrocore)
+-- Diagnostics
 vim.diagnostic.config({
-  virtual_text = true,
-  underline = true,
-  signs = true,
-  update_in_insert = false,
-  severity_sort = true,
+	virtual_text = true,
+	underline = true,
+	signs = true,
+	update_in_insert = false,
+	severity_sort = true,
 })
