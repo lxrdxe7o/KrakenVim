@@ -1,0 +1,150 @@
+<svg width="1200" height="150" viewBox="0 0 1200 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#161b22;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#58a6ff;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#58a6ff;stop-opacity:0.1" />
+    </linearGradient>
+    
+    <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7dd3fc;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#7dd3fc;stop-opacity:0.05" />
+    </linearGradient>
+    
+    <!-- Animations -->
+    <style>
+      @keyframes waveMove1 {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-400px); }
+      }
+      
+      @keyframes waveMove2 {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(400px); }
+      }
+      
+      @keyframes bubbleRise {
+        0% { transform: translateY(0); opacity: 0; }
+        10% { opacity: 0.4; }
+        90% { opacity: 0.2; }
+        100% { transform: translateY(-80px); opacity: 0; }
+      }
+      
+      @keyframes iconFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+      
+      @keyframes heartBeat {
+        0%, 100% { transform: scale(1); }
+        10%, 30% { transform: scale(1.1); }
+        20%, 40% { transform: scale(1); }
+      }
+      
+      .wave1 {
+        animation: waveMove1 20s linear infinite;
+      }
+      
+      .wave2 {
+        animation: waveMove2 15s linear infinite;
+      }
+      
+      .bubble {
+        animation: bubbleRise 6s ease-in-out infinite;
+      }
+      
+      .icon {
+        animation: iconFloat 3s ease-in-out infinite;
+      }
+      
+      .heart {
+        animation: heartBeat 1.5s ease-in-out infinite;
+        transform-origin: center;
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="150" fill="url(#oceanGradient)"/>
+  
+  <!-- Wave Pattern 1 (bottom layer) -->
+  <g class="wave1">
+    <path d="M 0,80 Q 100,70 200,80 T 400,80 T 600,80 T 800,80 T 1000,80 T 1200,80 T 1400,80 T 1600,80 L 1600,150 L 0,150 Z" 
+          fill="url(#waveGradient1)"/>
+  </g>
+  
+  <!-- Wave Pattern 2 (top layer) -->
+  <g class="wave2">
+    <path d="M 0,90 Q 100,85 200,90 T 400,90 T 600,90 T 800,90 T 1000,90 T 1200,90 L 1200,150 L 0,150 Z" 
+          fill="url(#waveGradient2)"/>
+  </g>
+  
+  <!-- Bubbles -->
+  <circle class="bubble" cx="200" cy="130" r="3" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.3" style="animation-delay: 0s"/>
+  <circle class="bubble" cx="400" cy="135" r="2.5" fill="none" stroke="#7dd3fc" stroke-width="1" opacity="0.3" style="animation-delay: 1s"/>
+  <circle class="bubble" cx="600" cy="132" r="3.5" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.3" style="animation-delay: 2s"/>
+  <circle class="bubble" cx="800" cy="138" r="2" fill="none" stroke="#7dd3fc" stroke-width="1" opacity="0.3" style="animation-delay: 3s"/>
+  <circle class="bubble" cx="1000" cy="133" r="3" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.3" style="animation-delay: 4s"/>
+  
+  <!-- Decorative Icons -->
+  <!-- Left: Treasure Chest -->
+  <g class="icon" transform="translate(100, 55)" opacity="0.6" style="animation-delay: 0s">
+    <rect x="0" y="10" width="30" height="20" rx="2" fill="#8b5cf6" opacity="0.6"/>
+    <rect x="0" y="0" width="30" height="12" rx="3" fill="#58a6ff" opacity="0.5"/>
+    <rect x="13" y="5" width="4" height="8" fill="#7dd3fc" opacity="0.7"/>
+    <circle cx="15" cy="9" r="2" fill="#39d353" opacity="0.8"/>
+  </g>
+  
+  <!-- Right: Anchor -->
+  <g class="icon" transform="translate(1070, 55)" opacity="0.6" style="animation-delay: 1s">
+    <circle cx="15" cy="5" r="4" fill="none" stroke="#58a6ff" stroke-width="2" opacity="0.6"/>
+    <line x1="15" y1="9" x2="15" y2="28" stroke="#58a6ff" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 5,20 L 15,28 L 25,20" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="7" y1="23" x2="3" y2="27" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="23" y1="23" x2="27" y2="27" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  </g>
+  
+  <!-- Main Text -->
+  <text x="600" y="45" font-family="Arial, sans-serif" font-size="16" fill="#f0f6fc" text-anchor="middle" opacity="0.9">
+    Built with 
+  </text>
+  
+  <!-- Animated Heart -->
+  <g class="heart" transform="translate(643, 35)">
+    <path d="M 0,3 C 0,1.5 1,0 3,0 C 4,0 5,1 5,2 C 5,1 6,0 7,0 C 9,0 10,1.5 10,3 C 10,6 5,9 5,9 C 5,9 0,6 0,3 Z" 
+          fill="#ef4444" opacity="0.9"/>
+  </g>
+  
+  <text x="660" y="45" font-family="Arial, sans-serif" font-size="16" fill="#f0f6fc" text-anchor="start" opacity="0.9">
+    and Lua
+  </text>
+  
+  <!-- Separator -->
+  <text x="600" y="45" font-family="Arial, sans-serif" font-size="16" fill="#58a6ff" text-anchor="middle" opacity="0.6" dx="52">
+    •
+  </text>
+  
+  <!-- Secondary Text -->
+  <text x="600" y="45" font-family="Arial, sans-serif" font-size="16" fill="#7dd3fc" text-anchor="middle" opacity="0.8" dx="110">
+    Powered by Lazy.nvim
+  </text>
+  
+  <!-- Bottom Text -->
+  <text x="600" y="75" font-family="Arial, sans-serif" font-size="14" fill="#f0f6fc" text-anchor="middle" opacity="0.7">
+    KrakenVim - Dive deep into productivity
+  </text>
+  
+  <!-- Creator Credit -->
+  <text x="600" y="95" font-family="Arial, sans-serif" font-size="12" fill="#58a6ff" text-anchor="middle" opacity="0.6">
+    Made by lxrdxe7o
+  </text>
+  
+  <!-- Decorative Line -->
+  <line x1="400" y1="20" x2="800" y2="20" stroke="#58a6ff" stroke-width="1" opacity="0.2"/>
+  <line x1="450" y1="105" x2="750" y2="105" stroke="#58a6ff" stroke-width="1" opacity="0.2"/>
+</svg>
