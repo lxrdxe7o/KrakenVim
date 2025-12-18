@@ -9,8 +9,7 @@
 [![Lazy.nvim](https://img.shields.io/badge/Powered%20by-Lazy.nvim-orange.svg?style=for-the-badge)](https://github.com/folke/lazy.nvim)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-**A modern, modular Neovim configuration built from scratch**  
-*Preserving AstroNvim muscle memory with a clean, powerful foundation*
+**A modern, modular Neovim config**
 
 [Features](#-features) • [Installation](#-installation) • [Keybindings](#-keybindings) • [Plugins](#-plugin-reference)
 
@@ -91,24 +90,29 @@
 ## 📸 Screenshots
 
 ### Dashboard
+
 ![Dashboard](assets/screenshots/dashboard.png)
-*Alpha dashboard with custom Kraken ASCII art and quick actions*
+_Alpha dashboard with custom Kraken ASCII art and quick actions_
 
 ### Code Editing
+
 ![Coding](assets/screenshots/coding.png)
-*LSP in action with inlay hints, auto-completion, and diagnostics*
+_LSP in action with inlay hints, auto-completion, and diagnostics_
 
 ### Debugging
+
 ![Debug](assets/screenshots/debug.png)
-*DAP UI showing Python debugging with breakpoints and variable inspection*
+_DAP UI showing Python debugging with breakpoints and variable inspection_
 
 ### Theme Picker
+
 ![Themes](assets/screenshots/themes.png)
-*Telescope colorscheme picker with live preview and persistent selection*
+_Telescope colorscheme picker with live preview and persistent selection_
 
 ### File Explorer
+
 ![Explorer](assets/screenshots/explorer.png)
-*Neo-tree file explorer with Git integration and file icons*
+_Neo-tree file explorer with Git integration and file icons_
 
 ---
 
@@ -116,13 +120,13 @@
 
 ### Core Requirements
 
-| Requirement | Minimum Version | Purpose |
-|------------|----------------|---------|
-| **Neovim** | 0.10.0 | Core editor with modern Lua API |
-| **Git** | 2.19.0 | Plugin management and version control |
-| **Node.js** | 16.x | LSP servers and tooling |
-| **npm/yarn** | Latest | Package management |
-| **Nerd Font** | Any | Icons and glyphs (recommended: JetBrainsMono) |
+| Requirement   | Minimum Version | Purpose                                       |
+| ------------- | --------------- | --------------------------------------------- |
+| **Neovim**    | 0.10.0          | Core editor with modern Lua API               |
+| **Git**       | 2.19.0          | Plugin management and version control         |
+| **Node.js**   | 16.x            | LSP servers and tooling                       |
+| **npm/yarn**  | Latest          | Package management                            |
+| **Nerd Font** | Any             | Icons and glyphs (recommended: JetBrainsMono) |
 
 ### Recommended Tools
 
@@ -145,29 +149,36 @@ gcc/clang    # C compiler for native extensions
 ### Language-Specific Dependencies
 
 #### Python
+
 - Python 3.8+
 - pip (package manager)
 
 #### JavaScript/TypeScript
+
 - Node.js 16+
 - npm or yarn
 
 #### Java
+
 - JDK 17+ (multiple versions supported via SDKMAN/asdf)
 - Maven or Gradle (auto-detected)
 
 #### Rust
+
 - Rust 1.70+ (via rustup)
 - cargo (included with Rust)
 
 #### Go
+
 - Go 1.20+
 
 #### C/C++
+
 - GCC 11+ or Clang 14+
 - CMake (for project builds)
 
 #### Web Development
+
 - Node.js (for live-server)
 - Browser for preview
 
@@ -196,17 +207,20 @@ git clone https://github.com/lxrdxe7o/KrakenVim.git ~/.config/nvim
 #### Install Dependencies
 
 **Arch Linux:**
+
 ```bash
 sudo pacman -S neovim git nodejs npm ripgrep fd lazygit make gcc
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt update
 sudo apt install neovim git nodejs npm ripgrep fd-find make gcc
 ```
 
 **Fedora:**
+
 ```bash
 sudo dnf install neovim git nodejs npm ripgrep fd-find lazygit make gcc
 ```
@@ -254,11 +268,13 @@ git clone https://github.com/lxrdxe7o/KrakenVim.git "$env:LOCALAPPDATA\nvim"
 #### Install Dependencies
 
 **Using Scoop:**
+
 ```powershell
 scoop install neovim git nodejs ripgrep fd lazygit make gcc
 ```
 
 **Using Chocolatey:**
+
 ```powershell
 choco install neovim git nodejs ripgrep fd lazygit make mingw
 ```
@@ -344,6 +360,7 @@ KrakenVim uses Mason for automatic tool installation:
 The following will auto-install based on your language files:
 
 **Auto-Installed LSP Servers:**
+
 - `lua_ls` - Lua
 - `ts_ls` - TypeScript/JavaScript
 - `pyright` - Python
@@ -356,6 +373,7 @@ The following will auto-install based on your language files:
 - `bashls` - Shell scripts
 
 **Auto-Installed Formatters:**
+
 - `stylua` - Lua
 - `prettier` - JS/TS/HTML/CSS/JSON/Markdown
 - `black`, `isort` - Python
@@ -365,12 +383,14 @@ The following will auto-install based on your language files:
 - `google-java-format` - Java
 
 **Auto-Installed Linters:**
+
 - `eslint_d` - JavaScript/TypeScript
 - `ruff` - Python
 - `golangcilint` - Go
 - `shellcheck` - Shell scripts
 
 **Auto-Installed Debug Adapters:**
+
 - `debugpy` - Python
 - `js-debug-adapter` - JavaScript/TypeScript
 - `delve` - Go
@@ -380,6 +400,7 @@ The following will auto-install based on your language files:
 ### Verify Installation
 
 Check LSP status:
+
 ```vim
 :LspInfo
 :Mason
@@ -395,13 +416,14 @@ Check LSP status:
 #### Setup
 
 1. **Install Python 3.8+**
+
    ```bash
    # Linux
    sudo apt install python3 python3-pip python3-venv
-   
+
    # macOS
    brew install python@3.11
-   
+
    # Windows
    # Download from python.org
    ```
@@ -419,7 +441,7 @@ Check LSP status:
 - **LSP**: Auto-completion, go-to-definition, hover docs, refactoring
 - **Formatting**: Black (line length 88) + isort (import sorting)
 - **Linting**: Ruff (fast Python linter)
-- **Debugging**: 
+- **Debugging**:
   - Launch current file
   - Launch with arguments
   - Django development server
@@ -432,6 +454,7 @@ Check LSP status:
 Pre-configured debug profiles:
 
 **Django:**
+
 ```vim
 :DapContinue
 " Select 'Launch Django'
@@ -439,6 +462,7 @@ Pre-configured debug profiles:
 ```
 
 **Flask:**
+
 ```vim
 :DapContinue
 " Select 'Launch Flask'
@@ -452,14 +476,15 @@ Pre-configured debug profiles:
 #### Setup
 
 1. **Install Node.js 16+**
+
    ```bash
    # Linux
    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
    sudo apt install nodejs
-   
+
    # macOS
    brew install node
-   
+
    # Windows
    scoop install nodejs
    ```
@@ -484,6 +509,7 @@ Pre-configured debug profiles:
 #### React/Vue/Svelte
 
 Additional LSP servers auto-install for framework files:
+
 - `svelte` - Svelte language server
 - `emmet_ls` - HTML/JSX expansion
 - `tailwindcss` - Tailwind CSS IntelliSense
@@ -495,8 +521,9 @@ Additional LSP servers auto-install for framework files:
 #### Setup
 
 1. **Install JDK 17+**
-   
+
    **Using SDKMAN (Recommended):**
+
    ```bash
    curl -s "https://get.sdkman.io" | bash
    sdk install java 17.0.9-tem
@@ -504,13 +531,14 @@ Additional LSP servers auto-install for framework files:
    ```
 
    **Using Package Manager:**
+
    ```bash
    # Arch
    sudo pacman -S jdk-openjdk
-   
+
    # Ubuntu
    sudo apt install openjdk-17-jdk
-   
+
    # macOS
    brew install openjdk@17
    ```
@@ -540,15 +568,15 @@ Additional LSP servers auto-install for framework files:
 
 #### Keybindings
 
-| Key | Action |
-|-----|--------|
-| `<leader>jo` | Organize imports |
-| `<leader>jv` | Extract variable |
-| `<leader>jc` | Extract constant |
+| Key          | Action                       |
+| ------------ | ---------------------------- |
+| `<leader>jo` | Organize imports             |
+| `<leader>jv` | Extract variable             |
+| `<leader>jc` | Extract constant             |
 | `<leader>jm` | Extract method (visual mode) |
-| `<leader>jt` | Test class |
-| `<leader>jn` | Test nearest method |
-| `<leader>jr` | Compile & run current file |
+| `<leader>jt` | Test class                   |
+| `<leader>jn` | Test nearest method          |
+| `<leader>jr` | Compile & run current file   |
 
 ---
 
@@ -557,6 +585,7 @@ Additional LSP servers auto-install for framework files:
 #### Setup
 
 1. **Install Rust**
+
    ```bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    source $HOME/.cargo/env
@@ -584,13 +613,13 @@ Additional LSP servers auto-install for framework files:
 
 #### Keybindings
 
-| Key | Action |
-|-----|--------|
+| Key          | Action                      |
+| ------------ | --------------------------- |
 | `<leader>rr` | Runnables (cargo run, etc.) |
-| `<leader>rt` | Testables (run tests) |
-| `<leader>dr` | Debuggables |
-| `<leader>rm` | Expand macro |
-| `K` | Hover actions |
+| `<leader>rt` | Testables (run tests)       |
+| `<leader>dr` | Debuggables                 |
+| `<leader>rm` | Expand macro                |
+| `K`          | Hover actions               |
 
 ---
 
@@ -599,12 +628,13 @@ Additional LSP servers auto-install for framework files:
 #### Setup
 
 1. **Install Go 1.20+**
+
    ```bash
    # Linux/macOS
    wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
    sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-   
+
    # macOS (Homebrew)
    brew install go
    ```
@@ -631,14 +661,15 @@ Additional LSP servers auto-install for framework files:
 #### Setup
 
 1. **Install Compiler**
+
    ```bash
    # Linux
    sudo apt install build-essential cmake
-   
+
    # macOS
    xcode-select --install
    brew install cmake
-   
+
    # Windows
    scoop install gcc cmake
    ```
@@ -706,23 +737,23 @@ Pre-configured for Neovim development!
 
 KrakenVim includes 15 carefully selected themes with a persistent picker:
 
-| Theme | Description | Default Style |
-|-------|-------------|---------------|
-| **Bamboo** | Default theme, warm multiplex variant | `multiplex` |
-| **Miasma** | Dark, muted forest theme | `dark` |
-| **Cyberdream** | Futuristic cyberpunk aesthetic | `default` |
-| **Gruvbox** | Retro groove warm theme | `dark` |
-| **Catppuccin** | Soothing pastel theme | `mocha` |
-| **TokyoNight** | Clean, vibrant night theme | `night` |
-| **OneDark** | Atom-inspired dark theme | `dark` |
-| **Kanagawa** | Inspired by famous painting | `wave` |
-| **Rose Pine** | Natural pine, foam, gold | `main` |
-| **Nightfox** | Highly customizable fox theme | `nightfox` |
-| **Dracula** | Classic dracula palette | `default` |
-| **Nord** | Arctic, north-bluish theme | `default` |
-| **Everforest** | Comfortable green forest | `medium` |
-| **Solarized Osaka** | Modern solarized variant | `dark` |
-| **Habamax** | Neovim default fallback | `dark` |
+| Theme               | Description                           | Default Style |
+| ------------------- | ------------------------------------- | ------------- |
+| **Bamboo**          | Default theme, warm multiplex variant | `multiplex`   |
+| **Miasma**          | Dark, muted forest theme              | `dark`        |
+| **Cyberdream**      | Futuristic cyberpunk aesthetic        | `default`     |
+| **Gruvbox**         | Retro groove warm theme               | `dark`        |
+| **Catppuccin**      | Soothing pastel theme                 | `mocha`       |
+| **TokyoNight**      | Clean, vibrant night theme            | `night`       |
+| **OneDark**         | Atom-inspired dark theme              | `dark`        |
+| **Kanagawa**        | Inspired by famous painting           | `wave`        |
+| **Rose Pine**       | Natural pine, foam, gold              | `main`        |
+| **Nightfox**        | Highly customizable fox theme         | `nightfox`    |
+| **Dracula**         | Classic dracula palette               | `default`     |
+| **Nord**            | Arctic, north-bluish theme            | `default`     |
+| **Everforest**      | Comfortable green forest              | `medium`      |
+| **Solarized Osaka** | Modern solarized variant              | `dark`        |
+| **Habamax**         | Neovim default fallback               | `dark`        |
 
 #### Theme Picker
 
@@ -736,6 +767,7 @@ KrakenVim includes 15 carefully selected themes with a persistent picker:
 - **Enter to save**: Apply and persist selection
 
 All themes configured with:
+
 - Transparent backgrounds
 - Italic comments and keywords
 - LSP semantic highlighting
@@ -746,20 +778,21 @@ All themes configured with:
 
 ### 🔧 LSP & Language Support
 
-| Plugin | Purpose |
-|--------|---------|
-| `nvim-lspconfig` | LSP client configurations |
-| `mason.nvim` | LSP/DAP/formatter package manager |
-| `mason-lspconfig.nvim` | Bridges mason and lspconfig |
-| `nvim-jdtls` | Enhanced Java LSP with Eclipse JDTLS |
-| `rustaceanvim` | Enhanced Rust support with rust-analyzer |
-| `conform.nvim` | Async formatting engine |
-| `nvim-lint` | Asynchronous linter integration |
-| `lsp_signature.nvim` | Function signature hints while typing |
-| `fidget.nvim` | LSP progress notifications |
-| `schemastore.nvim` | JSON/YAML schema validation |
+| Plugin                 | Purpose                                  |
+| ---------------------- | ---------------------------------------- |
+| `nvim-lspconfig`       | LSP client configurations                |
+| `mason.nvim`           | LSP/DAP/formatter package manager        |
+| `mason-lspconfig.nvim` | Bridges mason and lspconfig              |
+| `nvim-jdtls`           | Enhanced Java LSP with Eclipse JDTLS     |
+| `rustaceanvim`         | Enhanced Rust support with rust-analyzer |
+| `conform.nvim`         | Async formatting engine                  |
+| `nvim-lint`            | Asynchronous linter integration          |
+| `lsp_signature.nvim`   | Function signature hints while typing    |
+| `fidget.nvim`          | LSP progress notifications               |
+| `schemastore.nvim`     | JSON/YAML schema validation              |
 
 **Supported Languages (Auto-Install):**
+
 - Lua, Python, JavaScript, TypeScript, Java, Rust, Go, C, C++
 - HTML, CSS, SCSS, Tailwind, Vue, Svelte, React
 - JSON, YAML, TOML, Bash, Markdown
@@ -768,21 +801,22 @@ All themes configured with:
 
 ### 💬 Completion
 
-| Plugin | Purpose |
-|--------|---------|
-| `nvim-cmp` | Completion engine |
-| `cmp-nvim-lsp` | LSP completion source |
-| `cmp-buffer` | Buffer word completion |
-| `cmp-path` | File path completion |
-| `cmp-emoji` | Emoji completion :rocket: |
-| `LuaSnip` | Snippet engine |
-| `friendly-snippets` | Snippet collection (VSCode format) |
-| `copilot.lua` | GitHub Copilot integration |
-| `copilot-cmp` | Copilot source for nvim-cmp |
-| `nvim-autopairs` | Auto-close brackets, quotes |
-| `lspkind.nvim` | VSCode-like pictograms in completion |
+| Plugin              | Purpose                              |
+| ------------------- | ------------------------------------ |
+| `nvim-cmp`          | Completion engine                    |
+| `cmp-nvim-lsp`      | LSP completion source                |
+| `cmp-buffer`        | Buffer word completion               |
+| `cmp-path`          | File path completion                 |
+| `cmp-emoji`         | Emoji completion :rocket:            |
+| `LuaSnip`           | Snippet engine                       |
+| `friendly-snippets` | Snippet collection (VSCode format)   |
+| `copilot.lua`       | GitHub Copilot integration           |
+| `copilot-cmp`       | Copilot source for nvim-cmp          |
+| `nvim-autopairs`    | Auto-close brackets, quotes          |
+| `lspkind.nvim`      | VSCode-like pictograms in completion |
 
 **Completion Sources (Priority Order):**
+
 1. Copilot (AI suggestions)
 2. LSP (language server)
 3. LuaSnip (snippets)
@@ -794,25 +828,26 @@ All themes configured with:
 
 ### 🐛 Debugging (DAP)
 
-| Plugin | Purpose |
-|--------|---------|
-| `nvim-dap` | Debug Adapter Protocol client |
-| `nvim-dap-ui` | Beautiful debugging UI |
-| `nvim-dap-virtual-text` | Show variable values as virtual text |
-| `mason-nvim-dap` | Auto-install debug adapters via Mason |
+| Plugin                  | Purpose                               |
+| ----------------------- | ------------------------------------- |
+| `nvim-dap`              | Debug Adapter Protocol client         |
+| `nvim-dap-ui`           | Beautiful debugging UI                |
+| `nvim-dap-virtual-text` | Show variable values as virtual text  |
+| `mason-nvim-dap`        | Auto-install debug adapters via Mason |
 
 **Pre-Configured Debug Adapters:**
 
-| Language | Adapter | Features |
-|----------|---------|----------|
-| **Python** | debugpy | File, args, Django, Flask, attach |
-| **JavaScript/TypeScript** | js-debug-adapter | Node, Jest, Mocha, Chrome |
-| **Java** | java-debug-adapter | File, tests, attach, hot reload |
-| **Go** | delve | File, package, workspace, tests |
-| **Rust** | codelldb | Cargo debug, file, attach |
-| **C/C++** | codelldb | Executable, args, attach |
+| Language                  | Adapter            | Features                          |
+| ------------------------- | ------------------ | --------------------------------- |
+| **Python**                | debugpy            | File, args, Django, Flask, attach |
+| **JavaScript/TypeScript** | js-debug-adapter   | Node, Jest, Mocha, Chrome         |
+| **Java**                  | java-debug-adapter | File, tests, attach, hot reload   |
+| **Go**                    | delve              | File, package, workspace, tests   |
+| **Rust**                  | codelldb           | Cargo debug, file, attach         |
+| **C/C++**                 | codelldb           | Executable, args, attach          |
 
 **DAP UI Layouts:**
+
 - Left sidebar: Scopes, breakpoints, stacks, watches
 - Bottom panel: REPL, console output
 
@@ -820,20 +855,21 @@ All themes configured with:
 
 ### ✏️ Editor Enhancements
 
-| Plugin | Purpose |
-|--------|---------|
-| `nvim-treesitter` | Syntax highlighting & code parsing (1.0 compatible) |
-| `mini.surround` | Add/delete/replace surroundings (quotes, brackets, tags) |
-| `mini.ai` | Extended text objects (functions, classes, parameters) |
-| `mini.bracketed` | Bracket navigation for diagnostics, buffers, files, etc. |
-| `mini.move` | Move lines/selections with Alt+hjkl |
-| `Comment.nvim` | Smart commenting (gcc, gbc) |
-| `todo-comments.nvim` | Highlight TODO, FIX, NOTE, HACK, etc. |
-| `better-escape.nvim` | Faster escape with jk/jj |
-| `neoscroll.nvim` | Smooth scrolling animations |
-| `indent-blankline.nvim` | Rainbow indent guides |
+| Plugin                  | Purpose                                                  |
+| ----------------------- | -------------------------------------------------------- |
+| `nvim-treesitter`       | Syntax highlighting & code parsing (1.0 compatible)      |
+| `mini.surround`         | Add/delete/replace surroundings (quotes, brackets, tags) |
+| `mini.ai`               | Extended text objects (functions, classes, parameters)   |
+| `mini.bracketed`        | Bracket navigation for diagnostics, buffers, files, etc. |
+| `mini.move`             | Move lines/selections with Alt+hjkl                      |
+| `Comment.nvim`          | Smart commenting (gcc, gbc)                              |
+| `todo-comments.nvim`    | Highlight TODO, FIX, NOTE, HACK, etc.                    |
+| `better-escape.nvim`    | Faster escape with jk/jj                                 |
+| `neoscroll.nvim`        | Smooth scrolling animations                              |
+| `indent-blankline.nvim` | Rainbow indent guides                                    |
 
 **Text Objects (via mini.ai):**
+
 - `if`/`af` - function inner/around
 - `ic`/`ac` - class inner/around
 - `ia`/`aa` - parameter inner/around
@@ -844,16 +880,17 @@ All themes configured with:
 
 ### 🔍 Navigation & Search
 
-| Plugin | Purpose |
-|--------|---------|
-| `telescope.nvim` | Fuzzy finder for files, grep, LSP, etc. |
-| `telescope-fzf-native.nvim` | C-based fzf algorithm for speed |
-| `telescope-ui-select.nvim` | Use Telescope for vim.ui.select |
-| `neo-tree.nvim` | File explorer with Git integration |
-| `gitsigns.nvim` | Git decorations and hunk operations |
-| `yazi.nvim` | Terminal file manager integration |
+| Plugin                      | Purpose                                 |
+| --------------------------- | --------------------------------------- |
+| `telescope.nvim`            | Fuzzy finder for files, grep, LSP, etc. |
+| `telescope-fzf-native.nvim` | C-based fzf algorithm for speed         |
+| `telescope-ui-select.nvim`  | Use Telescope for vim.ui.select         |
+| `neo-tree.nvim`             | File explorer with Git integration      |
+| `gitsigns.nvim`             | Git decorations and hunk operations     |
+| `yazi.nvim`                 | Terminal file manager integration       |
 
 **Telescope Pickers:**
+
 - Find files (hidden + no_ignore)
 - Live grep (ripgrep)
 - Buffers, recent files
@@ -865,18 +902,19 @@ All themes configured with:
 
 ### 🎨 UI Components
 
-| Plugin | Purpose |
-|--------|---------|
-| `alpha-nvim` | Customizable dashboard with Kraken ASCII art |
-| `lualine.nvim` | Statusline with mode, Git, diagnostics, LSP |
-| `bufferline.nvim` | Buffer tabs with LSP diagnostics |
-| `noice.nvim` | Modern UI for messages, cmdline, popupmenu |
-| `nvim-notify` | Fancy notification manager |
-| `dressing.nvim` | Improved vim.ui.select and vim.ui.input |
-| `nvim-web-devicons` | File icons and colors |
-| `which-key.nvim` | Keybinding hints and documentation |
+| Plugin              | Purpose                                      |
+| ------------------- | -------------------------------------------- |
+| `alpha-nvim`        | Customizable dashboard with Kraken ASCII art |
+| `lualine.nvim`      | Statusline with mode, Git, diagnostics, LSP  |
+| `bufferline.nvim`   | Buffer tabs with LSP diagnostics             |
+| `noice.nvim`        | Modern UI for messages, cmdline, popupmenu   |
+| `nvim-notify`       | Fancy notification manager                   |
+| `dressing.nvim`     | Improved vim.ui.select and vim.ui.input      |
+| `nvim-web-devicons` | File icons and colors                        |
+| `which-key.nvim`    | Keybinding hints and documentation           |
 
 **Dashboard Actions:**
+
 - Find file
 - New file
 - Recent files
@@ -889,68 +927,68 @@ All themes configured with:
 
 ### 🛠️ Tools
 
-| Plugin | Purpose |
-|--------|---------|
-| `toggleterm.nvim` | Persistent terminal windows (float/horizontal/vertical) |
-| `lazygit.nvim` | LazyGit TUI integration |
-| `compiler.nvim` | Multi-language build system |
-| `overseer.nvim` | Task runner for builds/tests |
-| `live-server.nvim` | Live HTML/CSS/JS preview server |
-| `trouble.nvim` | Pretty diagnostics, quickfix, location list |
+| Plugin             | Purpose                                                 |
+| ------------------ | ------------------------------------------------------- |
+| `toggleterm.nvim`  | Persistent terminal windows (float/horizontal/vertical) |
+| `lazygit.nvim`     | LazyGit TUI integration                                 |
+| `compiler.nvim`    | Multi-language build system                             |
+| `overseer.nvim`    | Task runner for builds/tests                            |
+| `live-server.nvim` | Live HTML/CSS/JS preview server                         |
+| `trouble.nvim`     | Pretty diagnostics, quickfix, location list             |
 
 ---
 
 ### 🎯 Extras
 
-| Plugin | Purpose |
-|--------|---------|
-| `presence.nvim` | Discord Rich Presence (show current file/language) |
-| `pomo.nvim` | Pomodoro timer with notifications |
-| `typr.nvim` | Typing practice game |
-| `obsidian.nvim` | Note-taking with Obsidian vaults |
-| `markdown-preview.nvim` | Live Markdown preview in browser |
-| `render-markdown.nvim` | Beautiful inline Markdown rendering |
+| Plugin                  | Purpose                                            |
+| ----------------------- | -------------------------------------------------- |
+| `presence.nvim`         | Discord Rich Presence (show current file/language) |
+| `pomo.nvim`             | Pomodoro timer with notifications                  |
+| `typr.nvim`             | Typing practice game                               |
+| `obsidian.nvim`         | Note-taking with Obsidian vaults                   |
+| `markdown-preview.nvim` | Live Markdown preview in browser                   |
+| `render-markdown.nvim`  | Beautiful inline Markdown rendering                |
 
 ---
 
 ## ⌨️ Keybindings
 
-**Leader Key:** `Space`  
+**Leader Key:** `Space`
 **Local Leader:** `,`
 
 ### General
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `<C-h/j/k/l>` | N | Navigate windows |
-| `<C-Up/Down/Left/Right>` | N | Resize windows |
-| `<C-s>` | N, I | Save file |
-| `<C-q>` | N | Quit |
-| `jk` / `jj` | I | Escape to normal mode (better-escape) |
-| `gcc` | N | Comment line |
-| `gc` | V | Comment selection |
-| `<M-j/k>` | N, V | Move line/selection down/up |
-| `<M-h/l>` | N, V | Move line/selection left/right |
-| `<leader>h` | N | Home (Alpha dashboard) |
+| Key                      | Mode | Action                                |
+| ------------------------ | ---- | ------------------------------------- |
+| `<C-h/j/k/l>`            | N    | Navigate windows                      |
+| `<C-Up/Down/Left/Right>` | N    | Resize windows                        |
+| `<C-s>`                  | N, I | Save file                             |
+| `<C-q>`                  | N    | Quit                                  |
+| `jk` / `jj`              | I    | Escape to normal mode (better-escape) |
+| `gcc`                    | N    | Comment line                          |
+| `gc`                     | V    | Comment selection                     |
+| `<M-j/k>`                | N, V | Move line/selection down/up           |
+| `<M-h/l>`                | N, V | Move line/selection left/right        |
+| `<leader>h`              | N    | Home (Alpha dashboard)                |
 
 ---
 
 ### File Navigation (`<leader>f`)
 
-| Key | Action |
-|-----|--------|
-| `<leader>ff` | Find files (Telescope) |
-| `<leader>fg` | Live grep (Telescope) |
-| `<leader>fb` | Buffers (Telescope) |
-| `<leader>fh` | Help tags (Telescope) |
-| `<leader>fr` | Recent files (Telescope) |
-| `<leader>fk` | Keymaps (Telescope) |
-| `<leader>fd` | Diagnostics (Telescope) |
-| `<leader>fs` | Document symbols (Telescope) |
-| `<leader>fw` | Workspace symbols (Telescope) |
-| `<leader>fT` | Find TODOs (Telescope) |
-| `<leader><leader>` | Quick buffer switcher |
-| `<leader>/` | Search in current buffer |
+| Key                | Action                        |
+| ------------------ | ----------------------------- |
+| `<leader>ff`       | Find files (Telescope)        |
+| `<leader>fg`       | Live grep (Telescope)         |
+| `<leader>fb`       | Buffers (Telescope)           |
+| `<leader>fh`       | Help tags (Telescope)         |
+| `<leader>fr`       | Recent files (Telescope)      |
+| `<leader>fk`       | Keymaps (Telescope)           |
+| `<leader>fd`       | Diagnostics (Telescope)       |
+| `<leader>fs`       | Document symbols (Telescope)  |
+| `<leader>fw`       | Workspace symbols (Telescope) |
+| `<leader>fT`       | Find TODOs (Telescope)        |
+| `<leader><leader>` | Quick buffer switcher         |
+| `<leader>/`        | Search in current buffer      |
 
 ---
 
@@ -958,42 +996,42 @@ All themes configured with:
 
 #### Navigation
 
-| Key | Action |
-|-----|--------|
-| `gd` | Go to definition |
-| `gD` | Go to declaration |
-| `gr` | Go to references (Telescope) |
-| `gi` | Go to implementation |
-| `gy` | Go to type definition |
-| `K` | Hover documentation |
-| `<C-k>` | Signature help |
+| Key     | Action                       |
+| ------- | ---------------------------- |
+| `gd`    | Go to definition             |
+| `gD`    | Go to declaration            |
+| `gr`    | Go to references (Telescope) |
+| `gi`    | Go to implementation         |
+| `gy`    | Go to type definition        |
+| `K`     | Hover documentation          |
+| `<C-k>` | Signature help               |
 
 #### Actions
 
-| Key | Action |
-|-----|--------|
-| `<leader>la` | Code action |
-| `<leader>lr` | Rename symbol |
-| `<leader>lf` | Format buffer |
+| Key          | Action                   |
+| ------------ | ------------------------ |
+| `<leader>la` | Code action              |
+| `<leader>lr` | Rename symbol            |
+| `<leader>lf` | Format buffer            |
 | `<leader>ld` | Line diagnostics (float) |
-| `<leader>lh` | Signature help |
-| `<leader>li` | LSP Info |
-| `<leader>lI` | Mason Info |
-| `<leader>lR` | References (Telescope) |
-| `<leader>ls` | Document symbols |
-| `<leader>lS` | Workspace symbols |
+| `<leader>lh` | Signature help           |
+| `<leader>li` | LSP Info                 |
+| `<leader>lI` | Mason Info               |
+| `<leader>lR` | References (Telescope)   |
+| `<leader>ls` | Document symbols         |
+| `<leader>lS` | Workspace symbols        |
 
 #### Diagnostics
 
-| Key | Action |
-|-----|--------|
-| `]d` | Next diagnostic |
+| Key  | Action              |
+| ---- | ------------------- |
+| `]d` | Next diagnostic     |
 | `[d` | Previous diagnostic |
 
 #### Toggles
 
-| Key | Action |
-|-----|--------|
+| Key          | Action             |
+| ------------ | ------------------ |
 | `<leader>uh` | Toggle inlay hints |
 
 ---
@@ -1002,39 +1040,39 @@ All themes configured with:
 
 #### Breakpoints
 
-| Key | Action |
-|-----|--------|
-| `<leader>db` | Toggle breakpoint |
-| `<F9>` | Toggle breakpoint |
+| Key          | Action                 |
+| ------------ | ---------------------- |
+| `<leader>db` | Toggle breakpoint      |
+| `<F9>`       | Toggle breakpoint      |
 | `<leader>dB` | Conditional breakpoint |
-| `<leader>dL` | Log point |
+| `<leader>dL` | Log point              |
 
 #### Execution Control
 
-| Key | Action |
-|-----|--------|
-| `<leader>dc` | Continue |
-| `<F5>` | Continue |
-| `<leader>di` | Step into |
-| `<F11>` | Step into |
-| `<leader>do` | Step over |
-| `<F10>` | Step over |
-| `<leader>dO` | Step out |
-| `<S-F11>` | Step out |
-| `<leader>dC` | Run to cursor |
-| `<leader>dp` | Pause |
-| `<leader>dt` | Terminate |
+| Key          | Action                 |
+| ------------ | ---------------------- |
+| `<leader>dc` | Continue               |
+| `<F5>`       | Continue               |
+| `<leader>di` | Step into              |
+| `<F11>`      | Step into              |
+| `<leader>do` | Step over              |
+| `<F10>`      | Step over              |
+| `<leader>dO` | Step out               |
+| `<S-F11>`    | Step out               |
+| `<leader>dC` | Run to cursor          |
+| `<leader>dp` | Pause                  |
+| `<leader>dt` | Terminate              |
 | `<leader>dl` | Run last configuration |
 
 #### UI & Info
 
-| Key | Action |
-|-----|--------|
-| `<leader>du` | Toggle DAP UI |
+| Key          | Action                          |
+| ------------ | ------------------------------- |
+| `<leader>du` | Toggle DAP UI                   |
 | `<leader>de` | Eval expression (normal/visual) |
-| `<leader>dr` | Toggle REPL |
-| `<leader>ds` | Session info |
-| `<leader>dw` | Widgets |
+| `<leader>dr` | Toggle REPL                     |
+| `<leader>ds` | Session info                    |
+| `<leader>dw` | Widgets                         |
 
 ---
 
@@ -1042,157 +1080,157 @@ All themes configured with:
 
 #### Hunks
 
-| Key | Action |
-|-----|--------|
-| `]h` | Next hunk |
-| `[h` | Previous hunk |
-| `<leader>ghs` | Stage hunk |
-| `<leader>ghr` | Reset hunk |
-| `<leader>ghS` | Stage buffer |
-| `<leader>ghR` | Reset buffer |
-| `<leader>ghu` | Undo stage hunk |
-| `<leader>ghp` | Preview hunk |
+| Key           | Action            |
+| ------------- | ----------------- |
+| `]h`          | Next hunk         |
+| `[h`          | Previous hunk     |
+| `<leader>ghs` | Stage hunk        |
+| `<leader>ghr` | Reset hunk        |
+| `<leader>ghS` | Stage buffer      |
+| `<leader>ghR` | Reset buffer      |
+| `<leader>ghu` | Undo stage hunk   |
+| `<leader>ghp` | Preview hunk      |
 | `<leader>ghb` | Blame line (full) |
-| `<leader>ghd` | Diff this |
-| `<leader>ghD` | Diff this ~ |
+| `<leader>ghd` | Diff this         |
+| `<leader>ghD` | Diff this ~       |
 
 #### Toggles
 
-| Key | Action |
-|-----|--------|
+| Key           | Action            |
+| ------------- | ----------------- |
 | `<leader>gtb` | Toggle line blame |
-| `<leader>gtd` | Toggle deleted |
+| `<leader>gtd` | Toggle deleted    |
 
 #### Tools
 
-| Key | Action |
-|-----|--------|
+| Key          | Action  |
+| ------------ | ------- |
 | `<leader>gg` | LazyGit |
 
 #### Text Objects
 
-| Key | Mode | Action |
-|-----|------|--------|
+| Key  | Mode | Action              |
+| ---- | ---- | ------------------- |
 | `ih` | O, X | Select hunk (inner) |
 
 ---
 
 ### Buffers (`<leader>b`)
 
-| Key | Action |
-|-----|--------|
-| `<S-h>` | Previous buffer |
-| `<S-l>` | Next buffer |
-| `<leader>bp` | Pin buffer |
+| Key          | Action                   |
+| ------------ | ------------------------ |
+| `<S-h>`      | Previous buffer          |
+| `<S-l>`      | Next buffer              |
+| `<leader>bp` | Pin buffer               |
 | `<leader>bP` | Close non-pinned buffers |
-| `<leader>bo` | Close other buffers |
-| `<leader>bd` | Close current buffer |
+| `<leader>bo` | Close other buffers      |
+| `<leader>bd` | Close current buffer     |
 
 ---
 
 ### Explorer
 
-| Key | Action |
-|-----|--------|
-| `<leader>e` | Toggle Neo-tree |
-| `<leader>o` | Toggle Neo-tree focus |
-| `<leader>-` | Open Yazi at current file |
-| `<leader>cw` | Open Yazi in cwd |
-| `<C-Up>` | Resume last Yazi session |
+| Key          | Action                    |
+| ------------ | ------------------------- |
+| `<leader>e`  | Toggle Neo-tree           |
+| `<leader>o`  | Toggle Neo-tree focus     |
+| `<leader>-`  | Open Yazi at current file |
+| `<leader>cw` | Open Yazi in cwd          |
+| `<C-Up>`     | Resume last Yazi session  |
 
 ---
 
 ### Code Actions (`<leader>c`)
 
-| Key | Action |
-|-----|--------|
-| `<leader>ca` | LSP code action |
-| `<F6>` | Open compiler |
-| `<S-F6>` | Toggle compiler results |
+| Key          | Action                  |
+| ------------ | ----------------------- |
+| `<leader>ca` | LSP code action         |
+| `<F6>`       | Open compiler           |
+| `<S-F6>`     | Toggle compiler results |
 
 ---
 
 ### Terminal (`<leader>t`, `F7`)
 
-| Key | Action |
-|-----|--------|
-| `<F7>` | Toggle terminal |
-| `<leader>tf` | Float terminal |
-| `<leader>th` | Horizontal terminal |
-| `<leader>tv` | Vertical terminal |
-| `<leader>tp` | Start Pomodoro (25m) |
-| `<leader>tb` | Start break (5m) |
+| Key          | Action                 |
+| ------------ | ---------------------- |
+| `<F7>`       | Toggle terminal        |
+| `<leader>tf` | Float terminal         |
+| `<leader>th` | Horizontal terminal    |
+| `<leader>tv` | Vertical terminal      |
+| `<leader>tp` | Start Pomodoro (25m)   |
+| `<leader>tb` | Start break (5m)       |
 | `<leader>ts` | Start Pomodoro session |
 
 ---
 
 ### UI Toggles (`<leader>u`)
 
-| Key | Action |
-|-----|--------|
-| `<leader>uh` | Toggle inlay hints |
-| `<leader>un` | Toggle line numbers |
+| Key          | Action                  |
+| ------------ | ----------------------- |
+| `<leader>uh` | Toggle inlay hints      |
+| `<leader>un` | Toggle line numbers     |
 | `<leader>ur` | Toggle relative numbers |
-| `<leader>uw` | Toggle word wrap |
-| `<leader>us` | Toggle spell check |
+| `<leader>uw` | Toggle word wrap        |
+| `<leader>us` | Toggle spell check      |
 
 ---
 
 ### Java Specific (`<leader>j`)
 
-*Only available in Java files*
+_Only available in Java files_
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>jo` | N | Organize imports |
-| `<leader>jv` | N, V | Extract variable |
-| `<leader>jc` | N, V | Extract constant |
-| `<leader>jm` | V | Extract method |
-| `<leader>jt` | N | Test class |
-| `<leader>jn` | N | Test nearest method |
-| `<leader>ju` | N | Update project config |
-| `<leader>jr` | N | Compile & run |
+| Key          | Mode | Action                |
+| ------------ | ---- | --------------------- |
+| `<leader>jo` | N    | Organize imports      |
+| `<leader>jv` | N, V | Extract variable      |
+| `<leader>jc` | N, V | Extract constant      |
+| `<leader>jm` | V    | Extract method        |
+| `<leader>jt` | N    | Test class            |
+| `<leader>jn` | N    | Test nearest method   |
+| `<leader>ju` | N    | Update project config |
+| `<leader>jr` | N    | Compile & run         |
 
 ---
 
 ### Rust Specific (`<leader>r`)
 
-*Only available in Rust files*
+_Only available in Rust files_
 
-| Key | Action |
-|-----|--------|
-| `<leader>rr` | Runnables |
-| `<leader>rt` | Testables |
-| `<leader>dr` | Debuggables |
-| `<leader>rm` | Expand macro |
-| `K` | Hover actions (enhanced for Rust) |
+| Key          | Action                            |
+| ------------ | --------------------------------- |
+| `<leader>rr` | Runnables                         |
+| `<leader>rt` | Testables                         |
+| `<leader>dr` | Debuggables                       |
+| `<leader>rm` | Expand macro                      |
+| `K`          | Hover actions (enhanced for Rust) |
 
 ---
 
 ### Markdown (`<leader>m`, `<leader>O`)
 
-| Key | Action |
-|-----|--------|
+| Key          | Action                  |
+| ------------ | ----------------------- |
 | `<leader>mp` | Toggle Markdown preview |
-| `<leader>On` | New Obsidian note |
-| `<leader>Oo` | Open in Obsidian |
-| `<leader>Os` | Search Obsidian |
-| `<leader>Oq` | Quick switch |
-| `<leader>Ob` | Show backlinks |
-| `<leader>Od` | Daily note |
+| `<leader>On` | New Obsidian note       |
+| `<leader>Oo` | Open in Obsidian        |
+| `<leader>Os` | Search Obsidian         |
+| `<leader>Oq` | Quick switch            |
+| `<leader>Ob` | Show backlinks          |
+| `<leader>Od` | Daily note              |
 
 ---
 
 ### Trouble (`<leader>x`)
 
-| Key | Action |
-|-----|--------|
+| Key          | Action                |
+| ------------ | --------------------- |
 | `<leader>xx` | Diagnostics (project) |
-| `<leader>xX` | Diagnostics (buffer) |
-| `<leader>xl` | Location list |
-| `<leader>xq` | Quickfix list |
-| `<leader>xt` | Todo list |
-| `<leader>xT` | Todo/Fix/Fixme list |
+| `<leader>xX` | Diagnostics (buffer)  |
+| `<leader>xl` | Location list         |
+| `<leader>xq` | Quickfix list         |
+| `<leader>xt` | Todo list             |
+| `<leader>xT` | Todo/Fix/Fixme list   |
 
 ---
 
@@ -1200,63 +1238,64 @@ All themes configured with:
 
 #### Functions
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `if` | O, X | Inner function |
+| Key  | Mode | Action          |
+| ---- | ---- | --------------- |
+| `if` | O, X | Inner function  |
 | `af` | O, X | Around function |
 
 #### Classes
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `ic` | O, X | Inner class |
+| Key  | Mode | Action       |
+| ---- | ---- | ------------ |
+| `ic` | O, X | Inner class  |
 | `ac` | O, X | Around class |
 
 #### Parameters
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `ia` | O, X | Inner parameter/argument |
+| Key  | Mode | Action                    |
+| ---- | ---- | ------------------------- |
+| `ia` | O, X | Inner parameter/argument  |
 | `aa` | O, X | Around parameter/argument |
 
 #### Blocks
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `io` | O, X | Inner block/conditional/loop |
+| Key  | Mode | Action                        |
+| ---- | ---- | ----------------------------- |
+| `io` | O, X | Inner block/conditional/loop  |
 | `ao` | O, X | Around block/conditional/loop |
 
 #### Function Calls
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `iu` | O, X | Inner function call (usage) |
+| Key  | Mode | Action                       |
+| ---- | ---- | ---------------------------- |
+| `iu` | O, X | Inner function call (usage)  |
 | `au` | O, X | Around function call (usage) |
 
 #### Others
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `it` | O, X | Inner tag (HTML/XML) |
+| Key  | Mode | Action                |
+| ---- | ---- | --------------------- |
+| `it` | O, X | Inner tag (HTML/XML)  |
 | `at` | O, X | Around tag (HTML/XML) |
-| `id` | O, X | Digits |
-| `ie` | O, X | Word with case |
+| `id` | O, X | Digits                |
+| `ie` | O, X | Word with case        |
 
 ---
 
 ### Surroundings (mini.surround)
 
-| Key | Mode | Action |
-|-----|------|--------|
-| `gsa` | N, V | Add surrounding |
-| `gsd` | N | Delete surrounding |
-| `gsr` | N | Replace surrounding |
-| `gsf` | N | Find surrounding (right) |
-| `gsF` | N | Find surrounding (left) |
-| `gsh` | N | Highlight surrounding |
-| `gsn` | N | Update n_lines |
+| Key   | Mode | Action                   |
+| ----- | ---- | ------------------------ |
+| `gsa` | N, V | Add surrounding          |
+| `gsd` | N    | Delete surrounding       |
+| `gsr` | N    | Replace surrounding      |
+| `gsf` | N    | Find surrounding (right) |
+| `gsF` | N    | Find surrounding (left)  |
+| `gsh` | N    | Highlight surrounding    |
+| `gsn` | N    | Update n_lines           |
 
 **Examples:**
+
 - `gsaiw"` - Surround word with quotes
 - `gsd"` - Delete quotes
 - `gsr"'` - Replace quotes with single quotes
@@ -1265,33 +1304,34 @@ All themes configured with:
 
 ### Navigation Brackets (mini.bracketed)
 
-| Key | Action |
-|-----|--------|
-| `]b` / `[b` | Next/Previous buffer |
-| `]c` / `[c` | Next/Previous comment |
-| `]x` / `[x` | Next/Previous conflict marker |
-| `]d` / `[d` | Next/Previous diagnostic |
-| `]f` / `[f` | Next/Previous file |
-| `]i` / `[i` | Next/Previous indent change |
-| `]j` / `[j` | Next/Previous jump |
+| Key         | Action                           |
+| ----------- | -------------------------------- |
+| `]b` / `[b` | Next/Previous buffer             |
+| `]c` / `[c` | Next/Previous comment            |
+| `]x` / `[x` | Next/Previous conflict marker    |
+| `]d` / `[d` | Next/Previous diagnostic         |
+| `]f` / `[f` | Next/Previous file               |
+| `]i` / `[i` | Next/Previous indent change      |
+| `]j` / `[j` | Next/Previous jump               |
 | `]l` / `[l` | Next/Previous location list item |
-| `]o` / `[o` | Next/Previous oldfile |
-| `]q` / `[q` | Next/Previous quickfix item |
-| `]t` / `[t` | Next/Previous treesitter node |
-| `]u` / `[u` | Next/Previous undo state |
-| `]w` / `[w` | Next/Previous window |
-| `]y` / `[y` | Next/Previous yank |
+| `]o` / `[o` | Next/Previous oldfile            |
+| `]q` / `[q` | Next/Previous quickfix item      |
+| `]t` / `[t` | Next/Previous treesitter node    |
+| `]u` / `[u` | Next/Previous undo state         |
+| `]w` / `[w` | Next/Previous window             |
+| `]y` / `[y` | Next/Previous yank               |
 
 ---
 
 ### Todo Comments
 
-| Key | Action |
-|-----|--------|
-| `]t` | Next todo comment |
+| Key  | Action                |
+| ---- | --------------------- |
+| `]t` | Next todo comment     |
 | `[t` | Previous todo comment |
 
 **Recognized Keywords:**
+
 - `TODO:` - Tasks to complete
 - `FIX:` / `FIXME:` - Bugs to fix
 - `HACK:` - Temporary workarounds
@@ -1303,11 +1343,11 @@ All themes configured with:
 
 ### Miscellaneous
 
-| Key | Action |
-|-----|--------|
+| Key          | Action                 |
+| ------------ | ---------------------- |
 | `<leader>ty` | Typing practice (Typr) |
-| `<Esc>` | Clear search highlight |
-| `<C-c>` | Close floating windows |
+| `<Esc>`      | Clear search highlight |
+| `<C-c>`      | Close floating windows |
 
 ---
 
@@ -1322,6 +1362,7 @@ KrakenVim includes a **persistent colorscheme picker**:
 ```
 
 **Features:**
+
 - **Live Preview**: See theme changes in real-time
 - **Persistent Selection**: Choice saved to `~/.local/share/nvim/colorscheme.txt`
 - **Revert on Cancel**: `<Esc>` returns to original theme
@@ -1348,6 +1389,7 @@ KrakenVim includes a **persistent colorscheme picker**:
 ### Theme Configuration
 
 All themes configured with:
+
 - ✨ Transparent backgrounds (terminal background shows through)
 - 💬 Italic comments and keywords
 - 🎨 LSP semantic token highlighting
@@ -1368,6 +1410,7 @@ All themes configured with:
 ### Add Custom Theme
 
 1. Add plugin to `lua/plugins/colorscheme.lua`:
+
    ```lua
    {
      "author/theme-name",
@@ -1463,8 +1506,8 @@ Edit `lua/plugins/lsp.lua` in the `handlers` section:
     settings = {
       Lua = {
         -- Customize Lua LSP settings
-        diagnostics = { 
-          globals = { "vim", "my_global" } 
+        diagnostics = {
+          globals = { "vim", "my_global" }
         },
       },
     },
@@ -1509,6 +1552,7 @@ Modify existing plugin config in `lua/plugins/<category>.lua`:
 **Issue**: Telescope errors about `ft_to_lang` not found
 
 **Solution**: KrakenVim includes a compatibility shim in `init.lua`:
+
 ```lua
 -- Already handled in init.lua lines 21-44
 -- No action needed
@@ -1519,6 +1563,7 @@ Modify existing plugin config in `lua/plugins/<category>.lua`:
 **Issue**: LSP servers fail to install
 
 **Solution**:
+
 ```vim
 :Mason
 " Press 'g?' for help
@@ -1530,6 +1575,7 @@ Modify existing plugin config in `lua/plugins/<category>.lua`:
 ```
 
 **Common Fixes:**
+
 ```bash
 # Install build dependencies
 # Ubuntu/Debian
@@ -1547,12 +1593,14 @@ xcode-select --install
 **Issue**: No LSP functionality in supported language
 
 **Check**:
+
 ```vim
 :LspInfo
 :checkhealth lsp
 ```
 
 **Solutions**:
+
 - Ensure language file is saved (LSP attaches on BufRead)
 - Check Mason: `:Mason` and verify server installed
 - Restart LSP: `:LspRestart`
@@ -1563,11 +1611,13 @@ xcode-select --install
 **Issue**: Debugging doesn't start
 
 **Check**:
+
 ```vim
 :checkhealth dap
 ```
 
 **Solutions**:
+
 - Verify adapter installed: `:Mason`
 - For Python: Check virtual environment activated
 - For Java: Ensure JDK installed and in PATH
@@ -1578,6 +1628,7 @@ xcode-select --install
 **Issue**: Boxes/squares instead of icons
 
 **Solution**:
+
 1. Install a [Nerd Font](https://www.nerdfonts.com/)
 2. Set in terminal emulator settings
 3. Restart terminal
@@ -1590,6 +1641,7 @@ xcode-select --install
 **Solutions**:
 
 1. **Profile Startup**:
+
    ```bash
    nvim --startuptime startup.log
    ```
@@ -1600,6 +1652,7 @@ xcode-select --install
 
 3. **Reduce Treesitter Parsers**:
    Edit `lua/plugins/editor.lua`:
+
    ```lua
    local parsers = {
      "lua", "python", "javascript"  -- Only your used languages
@@ -1616,6 +1669,7 @@ xcode-select --install
 **Issue**: No Copilot suggestions
 
 **Setup**:
+
 ```vim
 :Copilot auth
 " Follow GitHub authentication flow
@@ -1627,12 +1681,14 @@ xcode-select --install
 **Issue**: Theme resets on restart
 
 **Check**:
+
 ```bash
 cat ~/.local/share/nvim/colorscheme.txt
 # Should show saved theme name
 ```
 
 **Fix**:
+
 ```vim
 :Telescope colorscheme
 " Select theme and press Enter (not Escape)
@@ -1657,6 +1713,7 @@ Contributions are welcome! Here's how:
 ### Suggesting Features
 
 Open an issue with `[Feature Request]` tag:
+
 - Clear description of feature
 - Use case / motivation
 - Example implementation (if applicable)
@@ -1714,7 +1771,7 @@ SOFTWARE.
 
 ![KrakenVim Footer](assets/footer.svg)
 
-**KrakenVim** - Dive deep into productivity  
+**KrakenVim** - Dive deep into productivity
 
 [![GitHub Stars](https://img.shields.io/github/stars/lxrdxe7o/KrakenVim?style=social)](https://github.com/lxrdxe7o/KrakenVim)
 [![GitHub Forks](https://img.shields.io/github/forks/lxrdxe7o/KrakenVim?style=social)](https://github.com/lxrdxe7o/KrakenVim/fork)
