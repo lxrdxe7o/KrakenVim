@@ -136,23 +136,17 @@
     <circle cx="15" cy="20" r="1" fill="#6366f1" opacity="0.2" class="glow"/>
   </g>
   
-  <!-- Main Text Line -->
-  <text x="600" y="45" font-family="'Courier New', monospace" font-size="15" fill="#6b7280" text-anchor="middle" opacity="0.7" letter-spacing="1">
-    FORGED WITH
-  </text>
-  
-  <!-- Heart Icon (Dark, Ominous) -->
-  <g class="heart" transform="translate(661, 34)">
-    <path d="M 0,3 C 0,1.2 1.2,0 2.8,0 C 4,0 4.8,0.8 5,2 C 5.2,0.8 6,0 7.2,0 C 8.8,0 10,1.2 10,3 C 10,6.5 5,10 5,10 C 5,10 0,6.5 0,3 Z" 
-          fill="#8b5cf6" opacity="0.7"/>
+  <!-- Main Text Line - CENTERED -->
+  <g text-anchor="middle">
+    <text x="600" y="45" font-family="'Courier New', monospace" font-size="15" fill="#6b7280" opacity="0.7" letter-spacing="1">
+      <tspan>FORGED WITH </tspan>
+      <tspan fill="#8b5cf6" opacity="0.8">♥</tspan>
+      <tspan> AND LUA</tspan>
+    </text>
   </g>
   
-  <text x="678" y="45" font-family="'Courier New', monospace" font-size="15" fill="#6b7280" text-anchor="start" opacity="0.7" letter-spacing="1">
-    AND LUA
-  </text>
-  
   <!-- Divider -->
-  <line x1="520" y1="60" x2="680" y2="60" stroke="#4a5568" stroke-width="0.5" opacity="0.3"/>
+  <line x1="480" y1="60" x2="720" y2="60" stroke="#4a5568" stroke-width="0.5" opacity="0.3"/>
   
   <!-- Secondary Text -->
   <text x="600" y="78" font-family="'Courier New', monospace" font-size="13" fill="#8b5cf6" text-anchor="middle" opacity="0.5" letter-spacing="1">
