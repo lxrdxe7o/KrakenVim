@@ -1,183 +1,287 @@
 <svg width="1200" height="300" viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Gradients -->
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0d1117;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#161b22;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0d1117;stop-opacity:1" />
+    <!-- Dark Abyssal Gradients -->
+    <linearGradient id="abyssGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#010409;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d1117;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#010409;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="depthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.8" />
+    </linearGradient>
+    
+    <linearGradient id="krakenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1f35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d1b47;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1f35;stop-opacity:1" />
     </linearGradient>
     
     <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#58a6ff;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#7dd3fc;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#4a5568;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a5568;stop-opacity:1" />
     </linearGradient>
     
-    <radialGradient id="glowGradient" cx="50%" cy="50%">
-      <stop offset="0%" style="stop-color:#7dd3fc;stop-opacity:0.8" />
-      <stop offset="50%" style="stop-color:#58a6ff;stop-opacity:0.3" />
-      <stop offset="100%" style="stop-color:#0d1117;stop-opacity:0" />
+    <radialGradient id="ominousGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.4" />
+      <stop offset="50%" style="stop-color:#2d1b47;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
     </radialGradient>
     
-    <!-- Filters -->
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+    <!-- Filters for Depth -->
+    <filter id="darkGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     
-    <filter id="tentacleGlow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    <filter id="tentacleDepth">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feOffset in="coloredBlur" dx="2" dy="3" result="offsetBlur"/>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="offsetBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     
     <!-- Animations -->
     <style>
-      @keyframes tentacleSwayLeft {
-        0%, 100% { transform: rotate(0deg) translateX(0); }
-        50% { transform: rotate(-3deg) translateX(-5px); }
+      @keyframes tentacleSlither {
+        0%, 100% { 
+          transform: rotate(0deg) translateX(0) translateY(0); 
+          opacity: 0.6;
+        }
+        25% { 
+          transform: rotate(-2deg) translateX(-8px) translateY(5px); 
+          opacity: 0.7;
+        }
+        50% { 
+          transform: rotate(0deg) translateX(0) translateY(8px); 
+          opacity: 0.5;
+        }
+        75% { 
+          transform: rotate(2deg) translateX(8px) translateY(5px); 
+          opacity: 0.7;
+        }
       }
       
-      @keyframes tentacleSwayRight {
-        0%, 100% { transform: rotate(0deg) translateX(0); }
-        50% { transform: rotate(3deg) translateX(5px); }
+      @keyframes tentacleSlitherReverse {
+        0%, 100% { 
+          transform: rotate(0deg) translateX(0) translateY(0); 
+          opacity: 0.6;
+        }
+        25% { 
+          transform: rotate(2deg) translateX(8px) translateY(5px); 
+          opacity: 0.7;
+        }
+        50% { 
+          transform: rotate(0deg) translateX(0) translateY(8px); 
+          opacity: 0.5;
+        }
+        75% { 
+          transform: rotate(-2deg) translateX(-8px) translateY(5px); 
+          opacity: 0.7;
+        }
       }
       
-      @keyframes textPulse {
-        0%, 100% { opacity: 1; filter: drop-shadow(0 0 20px #7dd3fc); }
-        50% { opacity: 0.85; filter: drop-shadow(0 0 30px #58a6ff); }
+      @keyframes ominousPulse {
+        0%, 100% { 
+          opacity: 0.7; 
+          filter: drop-shadow(0 0 10px #6366f1);
+        }
+        50% { 
+          opacity: 0.9; 
+          filter: drop-shadow(0 0 20px #8b5cf6);
+        }
       }
       
-      @keyframes particleFloat {
+      @keyframes depthFloat {
+        0% { transform: translateY(0) translateX(0) scale(0.8); opacity: 0; }
+        15% { opacity: 0.3; }
+        85% { opacity: 0.2; }
+        100% { transform: translateY(-120px) translateX(30px) scale(1); opacity: 0; }
+      }
+      
+      @keyframes abyssalDrift {
         0% { transform: translateY(0) translateX(0); opacity: 0; }
-        10% { opacity: 0.6; }
-        90% { opacity: 0.6; }
-        100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+        20% { opacity: 0.15; }
+        80% { opacity: 0.1; }
+        100% { transform: translateY(-180px) translateX(-40px); opacity: 0; }
       }
       
-      @keyframes bubbleRise {
-        0% { transform: translateY(0) scale(0.8); opacity: 0; }
-        10% { opacity: 0.5; }
-        90% { opacity: 0.3; }
-        100% { transform: translateY(-150px) scale(1.2); opacity: 0; }
+      @keyframes glowFade {
+        0%, 100% { opacity: 0.15; }
+        50% { opacity: 0.35; }
       }
       
-      @keyframes glowPulse {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 0.6; }
-      }
-      
-      .tentacle-left { 
-        animation: tentacleSwayLeft 4s ease-in-out infinite;
+      .tentacle-left-1 { 
+        animation: tentacleSlither 7s ease-in-out infinite;
         transform-origin: bottom right;
       }
       
-      .tentacle-right { 
-        animation: tentacleSwayRight 3.5s ease-in-out infinite;
+      .tentacle-left-2 { 
+        animation: tentacleSlither 8.5s ease-in-out infinite;
+        transform-origin: bottom right;
+        animation-delay: -2s;
+      }
+      
+      .tentacle-left-3 { 
+        animation: tentacleSlither 6s ease-in-out infinite;
+        transform-origin: bottom right;
+        animation-delay: -4s;
+      }
+      
+      .tentacle-right-1 { 
+        animation: tentacleSlitherReverse 7.5s ease-in-out infinite;
         transform-origin: bottom left;
       }
       
+      .tentacle-right-2 { 
+        animation: tentacleSlitherReverse 9s ease-in-out infinite;
+        transform-origin: bottom left;
+        animation-delay: -3s;
+      }
+      
+      .tentacle-right-3 { 
+        animation: tentacleSlitherReverse 6.5s ease-in-out infinite;
+        transform-origin: bottom left;
+        animation-delay: -1.5s;
+      }
+      
       .title-text {
-        animation: textPulse 2s ease-in-out infinite;
+        animation: ominousPulse 3s ease-in-out infinite;
       }
       
-      .particle {
-        animation: particleFloat 6s ease-in-out infinite;
+      .depth-particle {
+        animation: depthFloat 10s ease-in-out infinite;
       }
       
-      .bubble {
-        animation: bubbleRise 8s ease-in-out infinite;
+      .abyss-particle {
+        animation: abyssalDrift 15s ease-in-out infinite;
       }
       
-      .glow-circle {
-        animation: glowPulse 3s ease-in-out infinite;
+      .ominous-glow {
+        animation: glowFade 4s ease-in-out infinite;
       }
     </style>
   </defs>
   
-  <!-- Background -->
-  <rect width="1200" height="300" fill="url(#bgGradient)"/>
+  <!-- Abyssal Background -->
+  <rect width="1200" height="300" fill="url(#abyssGradient)"/>
   
-  <!-- Ambient glow behind text -->
-  <ellipse class="glow-circle" cx="600" cy="150" rx="400" ry="100" fill="url(#glowGradient)" opacity="0.3"/>
+  <!-- Depth Overlay -->
+  <rect width="1200" height="300" fill="url(#depthGradient)" opacity="0.5"/>
   
-  <!-- Left Tentacles -->
-  <g class="tentacle-left" filter="url(#tentacleGlow)">
-    <!-- Tentacle 1 -->
-    <path d="M 0,200 Q 50,180 80,160 Q 110,140 130,130" 
-          stroke="#8b5cf6" stroke-width="12" fill="none" opacity="0.7"/>
-    <circle cx="130" cy="130" r="8" fill="#7dd3fc" opacity="0.8"/>
-    <circle cx="110" cy="145" r="6" fill="#7dd3fc" opacity="0.6"/>
-    <circle cx="85" cy="165" r="5" fill="#7dd3fc" opacity="0.5"/>
+  <!-- Ominous Glow Behind Text -->
+  <ellipse class="ominous-glow" cx="600" cy="150" rx="450" ry="120" fill="url(#ominousGlow)" opacity="0.2"/>
+  
+  <!-- Left Kraken Tentacles -->
+  <g filter="url(#tentacleDepth)">
+    <!-- Tentacle 1 - Large, menacing -->
+    <g class="tentacle-left-1">
+      <path d="M -20,230 Q 30,210 70,190 Q 110,170 140,155 Q 160,145 175,138" 
+            stroke="url(#krakenGradient)" stroke-width="18" fill="none" opacity="0.7" stroke-linecap="round"/>
+      <!-- Suckers -->
+      <ellipse cx="50" cy="205" rx="7" ry="5" fill="#1a1f35" opacity="0.8"/>
+      <ellipse cx="90" cy="182" rx="6" ry="4" fill="#1a1f35" opacity="0.7"/>
+      <ellipse cx="130" cy="162" rx="5" ry="4" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="160" cy="148" rx="4" ry="3" fill="#1a1f35" opacity="0.5"/>
+      <!-- Dark glow at tip -->
+      <circle cx="175" cy="138" r="10" fill="#6366f1" opacity="0.2"/>
+    </g>
     
-    <!-- Tentacle 2 -->
-    <path d="M 0,220 Q 60,210 100,200 Q 140,190 170,185" 
-          stroke="#8b5cf6" stroke-width="10" fill="none" opacity="0.6"/>
-    <circle cx="170" cy="185" r="7" fill="#7dd3fc" opacity="0.7"/>
-    <circle cx="140" cy="195" r="5" fill="#7dd3fc" opacity="0.5"/>
+    <!-- Tentacle 2 - Medium -->
+    <g class="tentacle-left-2">
+      <path d="M -10,250 Q 50,240 95,225 Q 135,210 165,198 Q 185,190 200,185" 
+            stroke="url(#krakenGradient)" stroke-width="14" fill="none" opacity="0.6" stroke-linecap="round"/>
+      <ellipse cx="60" cy="235" rx="6" ry="4" fill="#1a1f35" opacity="0.7"/>
+      <ellipse cx="110" cy="218" rx="5" ry="3" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="150" cy="203" rx="4" ry="3" fill="#1a1f35" opacity="0.5"/>
+      <circle cx="200" cy="185" r="8" fill="#6366f1" opacity="0.15"/>
+    </g>
     
-    <!-- Tentacle 3 -->
-    <path d="M 0,240 Q 40,235 70,230 Q 100,225 120,220" 
-          stroke="#8b5cf6" stroke-width="8" fill="none" opacity="0.5"/>
-    <circle cx="120" cy="220" r="6" fill="#7dd3fc" opacity="0.6"/>
+    <!-- Tentacle 3 - Smaller, lurking -->
+    <g class="tentacle-left-3">
+      <path d="M 0,270 Q 40,265 75,258 Q 105,251 125,245" 
+            stroke="url(#krakenGradient)" stroke-width="11" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <ellipse cx="50" cy="262" rx="5" ry="3" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="95" cy="252" rx="4" ry="2" fill="#1a1f35" opacity="0.5"/>
+      <circle cx="125" cy="245" r="6" fill="#6366f1" opacity="0.1"/>
+    </g>
   </g>
   
-  <!-- Right Tentacles -->
-  <g class="tentacle-right" filter="url(#tentacleGlow)">
-    <!-- Tentacle 1 -->
-    <path d="M 1200,200 Q 1150,180 1120,160 Q 1090,140 1070,130" 
-          stroke="#8b5cf6" stroke-width="12" fill="none" opacity="0.7"/>
-    <circle cx="1070" cy="130" r="8" fill="#7dd3fc" opacity="0.8"/>
-    <circle cx="1090" cy="145" r="6" fill="#7dd3fc" opacity="0.6"/>
-    <circle cx="1115" cy="165" r="5" fill="#7dd3fc" opacity="0.5"/>
+  <!-- Right Kraken Tentacles -->
+  <g filter="url(#tentacleDepth)">
+    <!-- Tentacle 1 - Large, menacing -->
+    <g class="tentacle-right-1">
+      <path d="M 1220,230 Q 1170,210 1130,190 Q 1090,170 1060,155 Q 1040,145 1025,138" 
+            stroke="url(#krakenGradient)" stroke-width="18" fill="none" opacity="0.7" stroke-linecap="round"/>
+      <ellipse cx="1150" cy="205" rx="7" ry="5" fill="#1a1f35" opacity="0.8"/>
+      <ellipse cx="1110" cy="182" rx="6" ry="4" fill="#1a1f35" opacity="0.7"/>
+      <ellipse cx="1070" cy="162" rx="5" ry="4" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="1040" cy="148" rx="4" ry="3" fill="#1a1f35" opacity="0.5"/>
+      <circle cx="1025" cy="138" r="10" fill="#6366f1" opacity="0.2"/>
+    </g>
     
-    <!-- Tentacle 2 -->
-    <path d="M 1200,220 Q 1140,210 1100,200 Q 1060,190 1030,185" 
-          stroke="#8b5cf6" stroke-width="10" fill="none" opacity="0.6"/>
-    <circle cx="1030" cy="185" r="7" fill="#7dd3fc" opacity="0.7"/>
-    <circle cx="1060" cy="195" r="5" fill="#7dd3fc" opacity="0.5"/>
+    <!-- Tentacle 2 - Medium -->
+    <g class="tentacle-right-2">
+      <path d="M 1210,250 Q 1150,240 1105,225 Q 1065,210 1035,198 Q 1015,190 1000,185" 
+            stroke="url(#krakenGradient)" stroke-width="14" fill="none" opacity="0.6" stroke-linecap="round"/>
+      <ellipse cx="1140" cy="235" rx="6" ry="4" fill="#1a1f35" opacity="0.7"/>
+      <ellipse cx="1090" cy="218" rx="5" ry="3" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="1050" cy="203" rx="4" ry="3" fill="#1a1f35" opacity="0.5"/>
+      <circle cx="1000" cy="185" r="8" fill="#6366f1" opacity="0.15"/>
+    </g>
     
-    <!-- Tentacle 3 -->
-    <path d="M 1200,240 Q 1160,235 1130,230 Q 1100,225 1080,220" 
-          stroke="#8b5cf6" stroke-width="8" fill="none" opacity="0.5"/>
-    <circle cx="1080" cy="220" r="6" fill="#7dd3fc" opacity="0.6"/>
+    <!-- Tentacle 3 - Smaller, lurking -->
+    <g class="tentacle-right-3">
+      <path d="M 1200,270 Q 1160,265 1125,258 Q 1095,251 1075,245" 
+            stroke="url(#krakenGradient)" stroke-width="11" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <ellipse cx="1150" cy="262" rx="5" ry="3" fill="#1a1f35" opacity="0.6"/>
+      <ellipse cx="1105" cy="252" rx="4" ry="2" fill="#1a1f35" opacity="0.5"/>
+      <circle cx="1075" cy="245" r="6" fill="#6366f1" opacity="0.1"/>
+    </g>
   </g>
   
-  <!-- Floating Particles -->
-  <circle class="particle" cx="200" cy="250" r="2" fill="#39d353" opacity="0.6" style="animation-delay: 0s"/>
-  <circle class="particle" cx="350" cy="270" r="1.5" fill="#7dd3fc" opacity="0.5" style="animation-delay: 1s"/>
-  <circle class="particle" cx="500" cy="260" r="2" fill="#39d353" opacity="0.6" style="animation-delay: 2s"/>
-  <circle class="particle" cx="650" cy="275" r="1.5" fill="#7dd3fc" opacity="0.5" style="animation-delay: 3s"/>
-  <circle class="particle" cx="800" cy="265" r="2" fill="#39d353" opacity="0.6" style="animation-delay: 1.5s"/>
-  <circle class="particle" cx="950" cy="270" r="1.5" fill="#7dd3fc" opacity="0.5" style="animation-delay: 2.5s"/>
+  <!-- Abyssal Particles (Debris) -->
+  <circle class="depth-particle" cx="150" cy="280" r="1.5" fill="#4a5568" opacity="0.3" style="animation-delay: 0s"/>
+  <circle class="depth-particle" cx="300" cy="290" r="1" fill="#6366f1" opacity="0.2" style="animation-delay: 2s"/>
+  <circle class="depth-particle" cx="450" cy="285" r="1.2" fill="#4a5568" opacity="0.25" style="animation-delay: 4s"/>
+  <circle class="depth-particle" cx="600" cy="292" r="0.8" fill="#6366f1" opacity="0.2" style="animation-delay: 6s"/>
+  <circle class="depth-particle" cx="750" cy="288" r="1.3" fill="#4a5568" opacity="0.3" style="animation-delay: 3s"/>
+  <circle class="depth-particle" cx="900" cy="295" r="1" fill="#6366f1" opacity="0.2" style="animation-delay: 5s"/>
+  <circle class="depth-particle" cx="1050" cy="283" r="1.4" fill="#4a5568" opacity="0.25" style="animation-delay: 1s"/>
   
-  <!-- Bubbles -->
-  <circle class="bubble" cx="250" cy="280" r="4" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.4" style="animation-delay: 0s"/>
-  <circle class="bubble" cx="450" cy="290" r="3" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.4" style="animation-delay: 2s"/>
-  <circle class="bubble" cx="750" cy="285" r="5" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.4" style="animation-delay: 4s"/>
-  <circle class="bubble" cx="950" cy="295" r="3.5" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.4" style="animation-delay: 6s"/>
+  <!-- Larger Debris -->
+  <ellipse class="abyss-particle" cx="250" cy="300" rx="2" ry="3" fill="#2d1b47" opacity="0.15" style="animation-delay: 0s"/>
+  <ellipse class="abyss-particle" cx="550" cy="305" rx="2.5" ry="3.5" fill="#2d1b47" opacity="0.12" style="animation-delay: 4s"/>
+  <ellipse class="abyss-particle" cx="850" cy="298" rx="2.2" ry="3.2" fill="#2d1b47" opacity="0.13" style="animation-delay: 2s"/>
   
   <!-- Main Title -->
   <g class="title-text">
-    <text x="600" y="160" font-family="Arial, sans-serif" font-size="84" font-weight="bold" 
-          fill="url(#textGradient)" text-anchor="middle" filter="url(#glow)">
+    <text x="600" y="160" font-family="'Courier New', monospace" font-size="84" font-weight="bold" 
+          fill="url(#textGradient)" text-anchor="middle" filter="url(#darkGlow)" letter-spacing="4">
       KRAKENVIM
     </text>
   </g>
   
   <!-- Subtitle -->
-  <text x="600" y="195" font-family="Arial, sans-serif" font-size="18" 
-        fill="#f0f6fc" text-anchor="middle" opacity="0.8">
-    A modern, modular Neovim configuration
+  <text x="600" y="195" font-family="'Courier New', monospace" font-size="16" 
+        fill="#6b7280" text-anchor="middle" opacity="0.6" letter-spacing="2">
+    FROM THE DEPTHS OF THE ABYSS
   </text>
   
-  <!-- Decorative underline -->
-  <line x1="450" y1="205" x2="750" y2="205" stroke="#58a6ff" stroke-width="2" opacity="0.4"/>
-  <circle cx="450" cy="205" r="3" fill="#7dd3fc" opacity="0.6"/>
-  <circle cx="750" cy="205" r="3" fill="#7dd3fc" opacity="0.6"/>
+  <!-- Decorative Underline with Ominous Detail -->
+  <line x1="420" y1="208" x2="780" y2="208" stroke="#4a5568" stroke-width="1" opacity="0.3"/>
+  <circle cx="420" cy="208" r="2" fill="#6366f1" opacity="0.4"/>
+  <circle cx="780" cy="208" r="2" fill="#6366f1" opacity="0.4"/>
+  <circle cx="600" cy="208" r="3" fill="#8b5cf6" opacity="0.3">
+    <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+  </circle>
 </svg>
