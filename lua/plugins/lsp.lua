@@ -14,7 +14,45 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      require("mason").setup(opts)
+
+      -- Auto-install formatters and linters
+      local ensure_installed = {
+        -- Formatters
+        "stylua",
+        "black",
+        "isort",
+        "prettierd",
+        "shfmt",
+        "gofumpt",
+        "goimports",
+        "clang-format",
+        "google-java-format",
+        "taplo",
+        "sql-formatter",
+        
+        -- Linters
+        "eslint_d",
+        "ruff",
+        "golangci-lint",
+        "shellcheck",
+      }
+
+      local registry = require("mason-registry")
+      registry.refresh(function()
+        for _, tool in ipairs(ensure_installed) do
+          local package = registry.get_package(tool)
+          if not package:is_installed() then
+            vim.notify("Installing " .. tool, vim.log.levels.INFO)
+            package:install()
+          end
+        end
+      end)
+    end,
   },
+
+
 
   -- Mason-lspconfig bridge with handlers
   {
@@ -395,7 +433,8 @@ return {
 
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         callback = function()
-          lint.try_lint()
+          -- Wrap in pcall to gracefully handle missing linters
+          pcall(lint.try_lint)
         end,
       })
     end,
