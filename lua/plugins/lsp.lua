@@ -17,38 +17,38 @@ return {
     config = function(_, opts)
       require("mason").setup(opts)
 
-      -- Auto-install formatters and linters
-      local ensure_installed = {
-        -- Formatters
-        "stylua",
-        "black",
-        "isort",
-        "prettierd",
-        "shfmt",
-        "gofumpt",
-        "goimports",
-        "clang-format",
-        "google-java-format",
-        "taplo",
-        "sql-formatter",
-        
-        -- Linters
-        "eslint_d",
-        "ruff",
-        "golangci-lint",
-        "shellcheck",
-      }
+      -- Auto-install formatters and linters (deferred to avoid conflicts)
+      vim.defer_fn(function()
+        local ensure_installed = {
+          -- Formatters
+          "stylua",
+          "black",
+          "isort",
+          "prettierd",
+          "shfmt",
+          "gofumpt",
+          "goimports",
+          "clang-format",
+          "google-java-format",
+          "taplo",
+          "sql-formatter",
+          -- Linters
+          "eslint_d",
+          "ruff",
+          "golangci-lint",
+          "shellcheck",
+        }
 
-      local registry = require("mason-registry")
-      registry.refresh(function()
-        for _, tool in ipairs(ensure_installed) do
-          local package = registry.get_package(tool)
-          if not package:is_installed() then
-            vim.notify("Installing " .. tool, vim.log.levels.INFO)
-            package:install()
+        local registry = require("mason-registry")
+        registry.refresh(function()
+          for _, tool in ipairs(ensure_installed) do
+            local ok, pkg = pcall(registry.get_package, tool)
+            if ok and not pkg:is_installed() then
+              pkg:install()
+            end
           end
-        end
-      end)
+        end)
+      end, 100)
     end,
   },
 

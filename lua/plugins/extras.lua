@@ -44,8 +44,17 @@ return {
 		"epwalsh/obsidian.nvim",
 		version = "*",
 		lazy = true,
-		ft = "markdown",
+		-- Only load when inside a vault directory
+		event = {
+			"BufReadPre " .. vim.fn.expand("~") .. "/vaults/**.md",
+			"BufNewFile " .. vim.fn.expand("~") .. "/vaults/**.md",
+		},
 		dependencies = { "nvim-lua/plenary.nvim" },
+		cond = function()
+			-- Only enable if at least one vault directory exists
+			return vim.fn.isdirectory(vim.fn.expand("~/vaults/personal")) == 1
+				or vim.fn.isdirectory(vim.fn.expand("~/vaults/work")) == 1
+		end,
 		opts = {
 			workspaces = {
 				{ name = "personal", path = "~/vaults/personal" },

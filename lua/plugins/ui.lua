@@ -14,7 +14,7 @@ return {
 			local alpha = require("alpha")
 			local dashboard = require("alpha.themes.dashboard")
 
-			-- Custom header (from user.lua)
+			-- Custom header
 			dashboard.section.header.val = {
 				"                                   ",
 				"                                   ",
@@ -44,7 +44,19 @@ return {
 				dashboard.button("q", "  Quit", "<cmd>qa<cr>"),
 			}
 
-			dashboard.section.footer.val = ""
+			-- Dynamic footer with plugin stats
+			dashboard.section.footer.opts.hl = "AlphaFooter"
+			dashboard.section.footer.val = function()
+				local stats = require("lazy").stats()
+				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+				return {
+					"If You Don't Take Risks, You Can't Create a Future.",
+					" ",
+					"                                  - Monkey D. Luffy",
+					" ",
+					"       Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
+				}
+			end
 
 			alpha.setup(dashboard.config)
 		end,
