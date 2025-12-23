@@ -125,6 +125,16 @@ map("n", "<leader>ui", function()
 end, { desc = "Toggle inlay hints (global)" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
+-- ║                          ALPHA DASHBOARD (<leader>a)                      ║
+-- ╚══════════════════════════════════════════════════════════════════════════╝
+
+map("n", "<leader>ah", "<cmd>AlphaDashboard<CR>", { desc = "Open Alpha Dashboard" })
+map("n", "<leader>an", "<cmd>AlphaHeaderNext<CR>", { desc = "Next header" })
+map("n", "<leader>ap", "<cmd>AlphaHeaderPrev<CR>", { desc = "Previous header" })
+map("n", "<leader>ar", "<cmd>AlphaHeaderRandom<CR>", { desc = "Random header" })
+map("n", "<leader>ai", "<cmd>AlphaHeaderName<CR>", { desc = "Show header name" })
+
+-- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                         WRITE/SAVE (<leader>w)                            ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 

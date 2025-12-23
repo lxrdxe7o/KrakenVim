@@ -6,60 +6,108 @@ return {
 	{
 		"goolord/alpha-nvim",
 		event = "VimEnter",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		keys = {
-			{ "<leader>h", "<cmd>Alpha<cr>", desc = "Home (Alpha Dashboard)" },
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
 		},
-		config = function()
-			local alpha = require("alpha")
-			local dashboard = require("alpha.themes.dashboard")
+	config = function()
+		local alpha = require("alpha")
+		local dashboard = require("alpha.themes.dashboard")
+		local HeaderManager = require("utils.header_manager")
 
-			-- Custom header
-			dashboard.section.header.val = {
-				"                                   ",
-				"                                   ",
-				"                                   ",
-				"   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
-				"    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
-				"          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
-				"           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
-				"          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
-				"   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
-				"  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
-				" ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
-				" ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
-				"      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
-				"       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
-				"                                   ",
-				" ⠀ ⠀⠀   ⠀K⠀R⠀A⠀K E N V I M⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-			}
+		-- Initialize header manager
+		HeaderManager.init()
 
-			dashboard.section.buttons.val = {
-				dashboard.button("f", "  Find file", "<cmd>Telescope find_files<cr>"),
-				dashboard.button("n", "  New file", "<cmd>ene <BAR> startinsert<cr>"),
-				dashboard.button("r", "  Recent files", "<cmd>Telescope oldfiles<cr>"),
-				dashboard.button("g", "  Find text", "<cmd>Telescope live_grep<cr>"),
-				dashboard.button("c", "  Config", "<cmd>e $MYVIMRC<cr>"),
-				dashboard.button("l", "󰒲  Lazy", "<cmd>Lazy<cr>"),
-				dashboard.button("q", "  Quit", "<cmd>qa<cr>"),
-			}
+		-- Apply current header to dashboard
+		HeaderManager.apply_to_dashboard(dashboard)
 
-			-- Dynamic footer with plugin stats
-			dashboard.section.footer.opts.hl = "AlphaFooter"
-			dashboard.section.footer.val = function()
+		-- Customize buttons
+		dashboard.section.buttons.val = {
+			dashboard.button("f", "🔍  Find file", "<cmd>Telescope find_files<cr>"),
+			dashboard.button("n", "📄  New file", "<cmd>ene <BAR> startinsert<cr>"),
+			dashboard.button("r", "🕒  Recent files", "<cmd>Telescope oldfiles<cr>"),
+			dashboard.button("g", "🔎  Find text", "<cmd>Telescope live_grep<cr>"),
+			dashboard.button("c", "⚙️  Config", "<cmd>e $MYVIMRC<cr>"),
+			dashboard.button("i", "🎨  Next header", "<cmd>AlphaHeaderNext<cr>"),
+			dashboard.button("l", "💤  Lazy", "<cmd>Lazy<cr>"),
+			dashboard.button("q", "❌  Quit", "<cmd>qa<cr>"),
+		}
+
+		-- Dynamic footer with plugin stats
+		dashboard.section.footer.opts.hl = "AlphaFooter"
+		dashboard.section.footer.val = "⚡ Welcome to Neovim"
+
+		alpha.setup(dashboard.config)
+
+		-- Helper function to refresh the dashboard
+		local function refresh_dashboard()
+			-- Update the existing dashboard object instead of creating a new one
+			HeaderManager.apply_to_dashboard(dashboard)
+			
+			-- Re-setup alpha with updated config
+			alpha.setup(dashboard.config)
+			
+			-- Close any existing alpha buffers to force a clean state
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
+					pcall(vim.api.nvim_buf_delete, buf, { force = true })
+				end
+			end
+			
+			-- Use vim.schedule to ensure the buffer deletion completes
+			vim.schedule(function()
+				-- Now open alpha with the Alpha command
+				vim.cmd("Alpha")
+			end)
+		end
+
+		-- Create user commands for header cycling
+		vim.api.nvim_create_user_command("AlphaHeaderNext", function()
+			HeaderManager.next()
+			HeaderManager.save_state()
+			refresh_dashboard()
+		end, { desc = "Cycle to next header" })
+
+		vim.api.nvim_create_user_command("AlphaHeaderPrev", function()
+			HeaderManager.prev()
+			HeaderManager.save_state()
+			refresh_dashboard()
+		end, { desc = "Cycle to previous header" })
+
+		vim.api.nvim_create_user_command("AlphaHeaderRandom", function()
+			HeaderManager.random()
+			HeaderManager.save_state()
+			refresh_dashboard()
+		end, { desc = "Jump to random header" })
+
+		vim.api.nvim_create_user_command("AlphaHeaderName", function()
+			local name = HeaderManager.get_current_name()
+			local count = HeaderManager.get_count()
+			vim.notify(
+				string.format("Current header: %s (%d/%d)", name, HeaderManager.current_index, count),
+				vim.log.levels.INFO
+			)
+		end, { desc = "Show current header name" })
+
+		-- Autocmd to update footer after startup stats are available
+		vim.api.nvim_create_autocmd("User", {
+			once = true,
+			pattern = "LazyVimStarted",
+			callback = function()
 				local stats = require("lazy").stats()
 				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-				return {
-					"If You Don't Take Risks, You Can't Create a Future.",
-					" ",
-					"                                  - Monkey D. Luffy",
-					" ",
-					"       Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
-				}
-			end
+				dashboard.section.footer.val = "⚡ Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
+				pcall(vim.cmd.AlphaRedraw)
+			end,
+		})
 
-			alpha.setup(dashboard.config)
-		end,
+		-- Create a command to open Alpha with current header
+		vim.api.nvim_create_user_command("AlphaDashboard", function()
+			refresh_dashboard()
+		end, { desc = "Open Alpha Dashboard with current header" })
+	end,
+		keys = {
+			{ "<leader>h", "<cmd>AlphaDashboard<cr>", desc = "Home (Alpha Dashboard)" },
+		},
 	},
 
 	-- Lualine: Statusline
