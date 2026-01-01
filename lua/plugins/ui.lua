@@ -49,11 +49,18 @@ return {
 			-- Close any existing alpha buffers to force a clean state
 			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 				if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
+					-- Close all windows showing this buffer first
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == buf then
+							pcall(vim.api.nvim_win_close, win, true)
+						end
+					end
+					-- Then delete the buffer
 					pcall(vim.api.nvim_buf_delete, buf, { force = true })
 				end
 			end
 			
-			-- Use vim.schedule to ensure the buffer deletion completes
+			-- Use vim.schedule to ensure the buffer/window deletion completes
 			vim.schedule(function()
 				-- Now open alpha with the Alpha command
 				vim.cmd("Alpha")
@@ -96,14 +103,47 @@ return {
 				local stats = require("lazy").stats()
 				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
 				dashboard.section.footer.val = "⚡ Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
-				pcall(vim.cmd.AlphaRedraw)
+				
+				-- Only redraw if there's a valid alpha buffer visible
+				for _, win in ipairs(vim.api.nvim_list_wins()) do
+					if vim.api.nvim_win_is_valid(win) then
+						local buf = vim.api.nvim_win_get_buf(win)
+						if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
+							pcall(vim.cmd.AlphaRedraw)
+							break
+						end
+					end
+				end
 			end,
 		})
 
-		-- Create a command to open Alpha with current header
+		-- Create a command to toggle Alpha dashboard
 		vim.api.nvim_create_user_command("AlphaDashboard", function()
-			refresh_dashboard()
-		end, { desc = "Open Alpha Dashboard with current header" })
+			-- Check if current buffer is alpha
+			local current_buf = vim.api.nvim_get_current_buf()
+			if vim.bo[current_buf].filetype == "alpha" then
+				-- If on alpha, go to alternate buffer or create new one
+				local alt_buf = vim.fn.bufnr("#")
+				if alt_buf ~= -1 and vim.api.nvim_buf_is_valid(alt_buf) and vim.bo[alt_buf].buflisted then
+					vim.cmd("buffer " .. alt_buf)
+				else
+					-- Find any listed buffer that's not alpha
+					for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+						if vim.api.nvim_buf_is_valid(buf) 
+							and vim.bo[buf].buflisted 
+							and vim.bo[buf].filetype ~= "alpha" then
+							vim.cmd("buffer " .. buf)
+							return
+						end
+					end
+					-- No other buffer found, create a new one
+					vim.cmd("enew")
+				end
+			else
+				-- Not on alpha, open it
+				refresh_dashboard()
+			end
+		end, { desc = "Toggle Alpha Dashboard" })
 	end,
 		keys = {
 			{ "<leader>h", "<cmd>AlphaDashboard<cr>", desc = "Home (Alpha Dashboard)" },
