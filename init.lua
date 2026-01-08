@@ -17,27 +17,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- CRITICAL: Treesitter 1.0 compatibility shim
-do
-	local function ensure_ft_to_lang()
-		if vim.treesitter and vim.treesitter.language then
-			if not vim.treesitter.language.ft_to_lang then
-				vim.treesitter.language.ft_to_lang = function(ft)
-					return vim.treesitter.language.get_lang(ft)
-				end
-			end
-		end
-	end
-
-	ensure_ft_to_lang()
-
-	vim.api.nvim_create_autocmd("User", {
-		pattern = "LazyDone",
-		once = true,
-		callback = ensure_ft_to_lang,
-	})
-end
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
@@ -78,6 +57,9 @@ require("lazy").setup({
 		},
 	},
 })
+
+-- Apply nvim-treesitter 1.0 compatibility shims for older plugins (e.g., Telescope)
+require("config.compat").setup()
 
 -- Load persisted colorscheme IMMEDIATELY after lazy.setup()
 do

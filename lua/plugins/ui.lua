@@ -122,23 +122,23 @@ return {
 			-- Check if current buffer is alpha
 			local current_buf = vim.api.nvim_get_current_buf()
 			if vim.bo[current_buf].filetype == "alpha" then
-				-- If on alpha, go to alternate buffer or create new one
+				-- If on alpha, go to alternate buffer if available
 				local alt_buf = vim.fn.bufnr("#")
 				if alt_buf ~= -1 and vim.api.nvim_buf_is_valid(alt_buf) and vim.bo[alt_buf].buflisted then
 					vim.cmd("buffer " .. alt_buf)
-				else
-					-- Find any listed buffer that's not alpha
-					for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-						if vim.api.nvim_buf_is_valid(buf) 
-							and vim.bo[buf].buflisted 
-							and vim.bo[buf].filetype ~= "alpha" then
-							vim.cmd("buffer " .. buf)
-							return
-						end
-					end
-					-- No other buffer found, create a new one
-					vim.cmd("enew")
+					return
 				end
+				-- Find any listed buffer that's not alpha
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					if vim.api.nvim_buf_is_valid(buf) 
+						and vim.bo[buf].buflisted 
+						and vim.bo[buf].filetype ~= "alpha" then
+						vim.cmd("buffer " .. buf)
+						return
+					end
+				end
+				-- No other buffer found, just stay on alpha (don't create empty buffer)
+				vim.notify("No other buffers to switch to", vim.log.levels.INFO)
 			else
 				-- Not on alpha, open it
 				refresh_dashboard()
