@@ -1,11 +1,13 @@
 -- Header Manager for Alpha Dashboard
 -- Manages loading, cycling, and persistence of ASCII art headers
+-- Optimized with caching for fast startup
 
 local M = {}
 
 -- Configuration
 M.config = {
 	headers_path = vim.fn.stdpath("config") .. "/ascii/headers",
+	cache_file = vim.fn.stdpath("config") .. "/ascii/cache/header_index.json",
 	state_file = vim.fn.stdpath("config") .. "/.nvim_state/last_header.txt",
 	max_width = 48, -- Characters
 	max_height = 24, -- Lines
@@ -17,9 +19,82 @@ M.config = {
 M.headers = {} -- List of {name, path, category, index}
 M.current_index = 1
 M.initialized = false
+M._cache_loaded = false
+
+-- Get modification time of a directory (recursively checks all files)
+local function get_headers_mtime()
+	local newest_mtime = 0
+	local function check_dir(dir)
+		local handle = vim.loop.fs_scandir(dir)
+		if not handle then return end
+		while true do
+			local name, type = vim.loop.fs_scandir_next(handle)
+			if not name then break end
+			local path = dir .. "/" .. name
+			if type == "directory" then
+				check_dir(path)
+			elseif type == "file" then
+				local stat = vim.loop.fs_stat(path)
+				if stat and stat.mtime.sec > newest_mtime then
+					newest_mtime = stat.mtime.sec
+				end
+			end
+		end
+	end
+	check_dir(M.config.headers_path)
+	return newest_mtime
+end
+
+-- Load headers from cache file
+local function load_cache()
+	local file = io.open(M.config.cache_file, "r")
+	if not file then return nil end
+	
+	local content = file:read("*all")
+	file:close()
+	
+	local ok, cache = pcall(vim.json.decode, content)
+	if not ok or not cache then return nil end
+	
+	-- Validate cache version and check if headers directory was modified
+	if cache.version ~= 1 then return nil end
+	
+	local current_mtime = get_headers_mtime()
+	if cache.headers_mtime ~= current_mtime then
+		return nil -- Cache is stale
+	end
+	
+	return cache.headers
+end
+
+-- Save headers to cache file
+local function save_cache(headers)
+	-- Ensure cache directory exists
+	local cache_dir = vim.fn.fnamemodify(M.config.cache_file, ":h")
+	vim.fn.mkdir(cache_dir, "p")
+	
+	local cache = {
+		version = 1,
+		headers_mtime = get_headers_mtime(),
+		headers = headers,
+	}
+	
+	local file = io.open(M.config.cache_file, "w")
+	if file then
+		file:write(vim.json.encode(cache))
+		file:close()
+	end
+end
 
 -- Scan headers directory recursively
 function M.scan_headers()
+	-- Try to load from cache first
+	local cached = load_cache()
+	if cached then
+		M._cache_loaded = true
+		return cached
+	end
+	
 	local headers = {}
 	local index = 1
 
@@ -75,17 +150,28 @@ function M.scan_headers()
 		header.index = i
 	end
 
+	-- Save to cache for next startup
+	save_cache(headers)
+
 	return headers
+end
+
+-- Clear only the highlight groups that exist (optimized)
+local function clear_header_highlights()
+	-- Only clear highlights that actually exist - break early
+	for i = 0, 5000 do
+		local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = "I2A" .. i })
+		if not ok or vim.tbl_isempty(hl) then
+			break -- No more highlights to clear
+		end
+		vim.api.nvim_set_hl(0, "I2A" .. i, {})
+	end
 end
 
 -- Load a single header file
 function M.load_header(path)
-	-- Clear any existing header-related highlights first
-	pcall(function()
-		for i = 0, 5000 do
-			vim.api.nvim_set_hl(0, "I2A" .. i, {})
-		end
-	end)
+	-- Clear existing header-related highlights (optimized)
+	clear_header_highlights()
 
 	local ok, result = pcall(dofile, path)
 	if not ok then
@@ -115,9 +201,6 @@ function M.load_header(path)
 		return nil
 	end
 
-	-- Note: We're not enforcing size limits for alpha-ascii headers
-	-- They're designed to fit, and we trust the source
-
 	return header_data
 end
 
@@ -127,7 +210,7 @@ function M.init()
 		return
 	end
 
-	-- Scan for headers
+	-- Scan for headers (uses cache if available)
 	M.headers = M.scan_headers()
 
 	if #M.headers == 0 then
@@ -322,6 +405,18 @@ function M.apply_to_dashboard(dashboard)
 			dashboard.section.header.val = header_data
 		end
 	end
+end
+
+-- Rebuild the header cache (user command)
+function M.rebuild_cache()
+	-- Delete old cache
+	os.remove(M.config.cache_file)
+	M._cache_loaded = false
+	
+	-- Rescan
+	M.headers = M.scan_headers()
+	
+	vim.notify("Header cache rebuilt: " .. #M.headers .. " headers found", vim.log.levels.INFO)
 end
 
 return M

@@ -57,14 +57,14 @@
 - **Muscle Memory**: Preserves AstroNvim-style keybindings for seamless transition
 - **Modular Design**: Organized plugin structure for easy customization
 - **Language-First**: Complete LSP, DAP, and tooling for 15+ languages
-- **Performance**: Lazy loading and optimized startup (~50ms)
+- **Performance**: Aggressive lazy loading with sub-100ms startup
 - **Beautiful**: 15 carefully selected themes with persistent picker
 
 ---
 
 ## ✨ Features
 
-- ⚡ **Blazing Fast**: Lazy loading with sub-50ms startup time
+- ⚡ **Blazing Fast**: Aggressive lazy loading with header caching and sub-100ms startup
 - 🎨 **15 Beautiful Themes**: Persistent colorscheme picker with live preview
 - 🔍 **Powerful Fuzzy Finding**: Telescope with fzf-native for instant file/text search
 - 💡 **Full LSP Support**: 15+ languages with auto-completion, diagnostics, and formatting
@@ -75,7 +75,7 @@
 - 🔎 **Linting**: nvim-lint for real-time code quality checks
 - 🌊 **Smooth Animations**: Neoscroll for buttery scrolling
 - 📊 **Beautiful UI**: Custom statusline, bufferline, dashboard, and notifications
-- 🎨 **Custom Header System**: Cycle through multiple ASCII art headers with persistent state
+- 🎨 **Custom Header System**: Cached ASCII art headers with instant loading and persistent state
 - 🎮 **Discord Presence**: Show your coding activity
 - ⏱️ **Pomodoro Timer**: Built-in productivity timer
 - 📝 **Note Taking**: Obsidian.nvim integration
@@ -96,6 +96,7 @@
 _Alpha dashboard with cycling ASCII art headers and quick actions_
 
 **Features:**
+
 - **11 Built-in Headers**: Anime artwork (8), logos (2), minimal designs (1)
 - **Header Cycling**: Navigate through headers with keybindings or dashboard button
 - **Persistent State**: Remembers your last selected header across sessions
@@ -436,6 +437,7 @@ Check LSP status:
    ```
 
 2. **LSP, Formatter, Linter Auto-Install**
+
    - Open any `.py` file
    - Mason auto-installs: `pyright`, `debugpy`, `black`, `isort`, `ruff`
 
@@ -1457,7 +1459,9 @@ KrakenVim includes a **custom header cycling system** for the Alpha dashboard, a
 Headers are organized in categories under `~/.config/nvim/ascii/headers/`:
 
 #### Anime Category (8 headers)
+
 High-quality ANSI color artwork from alpha-ascii.nvim:
+
 - **Abstract Portrait** - Colorful abstract face design (208KB)
 - **Black Cat** - Minimalist black cat silhouette (60KB)
 - **Blue Bubblegum** - Anime character blowing bubblegum (132KB)
@@ -1468,13 +1472,16 @@ High-quality ANSI color artwork from alpha-ascii.nvim:
 - **Red JPA** - Red-themed Japanese art (223KB)
 
 #### Logos Category (2 headers)
+
 - **KrakenVim** - Custom Kraken logo
 - **Neovim Official** - Standard Neovim logo
 
 #### Minimal Category (1 header)
+
 - **Simple Nvim** - Compact ASCII text logo
 
 #### Custom Category
+
 Empty directory for your own headers created with the image converter.
 
 ### Header Cycling
@@ -1536,6 +1543,7 @@ sudo dnf install libcaca
 ```
 
 The script will:
+
 1. Convert your image to ASCII with ANSI colors
 2. Create a Lua file at `ascii/headers/custom/my_header_name.lua`
 3. Automatically make it available in the header rotation
@@ -1550,6 +1558,7 @@ The script will:
 #### Configuration
 
 The script uses these `img2txt` settings:
+
 - **Format**: UTF-8 with ANSI colors
 - **Dithering**: Ordered4 (balanced quality)
 - **Size**: 48x24 by default (matches alpha-ascii headers)
@@ -1557,11 +1566,13 @@ The script uses these `img2txt` settings:
 #### Tips for Best Results
 
 1. **Image Selection**:
+
    - High contrast images work best
    - Simple subjects (logos, portraits) better than complex scenes
    - Square or landscape orientations recommended
 
 2. **Size Guidelines**:
+
    - Default 48x24 fits most terminals
    - Larger sizes (60x30) for high-resolution displays
    - Smaller sizes (40x20) for compact dashboards
@@ -1622,6 +1633,7 @@ Advanced users can customize the header system in `lua/utils/header_manager.lua`
 ```lua
 M.config = {
     headers_path = vim.fn.stdpath("config") .. "/ascii/headers",
+    cache_file = vim.fn.stdpath("config") .. "/ascii/cache/header_index.json",
     state_file = vim.fn.stdpath("config") .. "/.nvim_state/last_header.txt",
     max_width = 48,           -- Maximum character width
     max_height = 24,          -- Maximum line height
@@ -1630,25 +1642,35 @@ M.config = {
 }
 ```
 
+**Performance Note**: Headers are cached in a JSON index file. The cache auto-invalidates when headers are modified. To manually rebuild:
+
+```vim
+:HeaderCacheRebuild
+```
+
 ### Troubleshooting Headers
 
 #### Headers Don't Change
+
 - Restart Neovim to reload the configuration
 - Check `:messages` for Lua errors
 - Verify commands exist: `:command AlphaHeader<Tab>`
 
 #### Colors Don't Show
+
 - Check terminal supports 24-bit color: `echo $COLORTERM`
 - Try a different terminal emulator (Alacritty, Kitty, WezTerm)
 - Headers still work without colors (monochrome fallback)
 
 #### Image Conversion Fails
+
 - Install libcaca: `sudo apt install caca-utils`
 - Check image path is correct
 - Try different image format (PNG works best)
 - Reduce dimensions if terminal is small
 
 #### Custom Header Not Appearing
+
 - Verify file is in `ascii/headers/custom/`
 - Check filename ends with `.lua`
 - Ensure file returns `{ header = {...} }` table
@@ -1875,6 +1897,7 @@ xcode-select --install
    ```
 
 2. **Disable Unused Plugins**:
+
    - Comment out in `lua/plugins/` files
    - Or set `enabled = false` in plugin spec
 

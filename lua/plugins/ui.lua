@@ -5,6 +5,7 @@ return {
 	-- Alpha: Dashboard
 	{
 		"goolord/alpha-nvim",
+		-- Load on VimEnter but defer actual display
 		event = "VimEnter",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
@@ -95,6 +96,12 @@ return {
 			)
 		end, { desc = "Show current header name" })
 
+		-- Command to rebuild header cache
+		vim.api.nvim_create_user_command("HeaderCacheRebuild", function()
+			HeaderManager.rebuild_cache()
+			refresh_dashboard()
+		end, { desc = "Rebuild header cache" })
+
 		-- Autocmd to update footer after startup stats are available
 		vim.api.nvim_create_autocmd("User", {
 			once = true,
@@ -117,27 +124,39 @@ return {
 			end,
 		})
 
+		-- Helper to check if a buffer is a "real" buffer (not empty/scratch)
+		local function is_real_buffer(buf)
+			if not vim.api.nvim_buf_is_valid(buf) then return false end
+			if not vim.bo[buf].buflisted then return false end
+			if vim.bo[buf].filetype == "alpha" then return false end
+			-- Check if buffer has a name or has been modified
+			local name = vim.api.nvim_buf_get_name(buf)
+			if name ~= "" then return true end
+			-- Check if buffer has content
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+			if #lines > 1 or (#lines == 1 and lines[1] ~= "") then return true end
+			return false
+		end
+
 		-- Create a command to toggle Alpha dashboard
 		vim.api.nvim_create_user_command("AlphaDashboard", function()
 			-- Check if current buffer is alpha
 			local current_buf = vim.api.nvim_get_current_buf()
 			if vim.bo[current_buf].filetype == "alpha" then
-				-- If on alpha, go to alternate buffer if available
+				-- If on alpha, go to a real buffer if available
 				local alt_buf = vim.fn.bufnr("#")
-				if alt_buf ~= -1 and vim.api.nvim_buf_is_valid(alt_buf) and vim.bo[alt_buf].buflisted then
+				if alt_buf ~= -1 and is_real_buffer(alt_buf) then
 					vim.cmd("buffer " .. alt_buf)
 					return
 				end
-				-- Find any listed buffer that's not alpha
+				-- Find any real buffer
 				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-					if vim.api.nvim_buf_is_valid(buf) 
-						and vim.bo[buf].buflisted 
-						and vim.bo[buf].filetype ~= "alpha" then
+					if is_real_buffer(buf) then
 						vim.cmd("buffer " .. buf)
 						return
 					end
 				end
-				-- No other buffer found, just stay on alpha (don't create empty buffer)
+				-- No real buffer found, just notify and stay on alpha
 				vim.notify("No other buffers to switch to", vim.log.levels.INFO)
 			else
 				-- Not on alpha, open it

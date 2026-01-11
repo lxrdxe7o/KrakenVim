@@ -1,9 +1,12 @@
 -- Colorscheme plugins
 -- All theme plugins are centralized here
 -- The persistent picker logic is in lua/config/colorscheme.lua
+-- 
+-- PERFORMANCE: Only the default theme (bamboo) is loaded eagerly.
+-- Other themes are lazy-loaded when selected via :colorscheme command.
 
 return {
-  -- Bamboo (default theme)
+  -- Bamboo (default theme) - loaded eagerly
   {
     "ribru17/bamboo.nvim",
     lazy = false,
@@ -41,17 +44,17 @@ return {
     end,
   },
 
-  -- Miasma
+  -- Miasma (lazy-loaded)
   {
     "xero/miasma.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
   },
 
-  -- Cyberdream
+  -- Cyberdream (lazy-loaded)
   {
     "scottmckendry/cyberdream.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       variant = "default",
@@ -79,10 +82,10 @@ return {
     },
   },
 
-  -- Gruvbox
+  -- Gruvbox (lazy-loaded)
   {
     "ellisonleao/gruvbox.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       terminal_colors = true,
@@ -110,11 +113,11 @@ return {
     },
   },
 
-  -- Catppuccin
+  -- Catppuccin (lazy-loaded)
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       flavour = "mocha",
@@ -167,10 +170,10 @@ return {
     },
   },
 
-  -- TokyoNight
+  -- TokyoNight (lazy-loaded)
   {
     "folke/tokyonight.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       style = "night",
@@ -192,10 +195,10 @@ return {
     },
   },
 
-  -- OneDark
+  -- OneDark (lazy-loaded)
   {
     "navarasu/onedark.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       style = "dark",
@@ -220,10 +223,10 @@ return {
     },
   },
 
-  -- Kanagawa
+  -- Kanagawa (lazy-loaded)
   {
     "rebelot/kanagawa.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       compile = false,
@@ -241,11 +244,11 @@ return {
     },
   },
 
-  -- Rose Pine
+  -- Rose Pine (lazy-loaded)
   {
     "rose-pine/neovim",
     name = "rose-pine",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       variant = "auto",
@@ -261,10 +264,10 @@ return {
     },
   },
 
-  -- Nightfox
+  -- Nightfox (lazy-loaded)
   {
     "EdenEast/nightfox.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       options = {
@@ -295,10 +298,10 @@ return {
     },
   },
 
-  -- Dracula
+  -- Dracula (lazy-loaded)
   {
     "Mofiqul/dracula.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       colors = {},
@@ -309,10 +312,10 @@ return {
     },
   },
 
-  -- Nord
+  -- Nord (lazy-loaded)
   {
     "shaunsingh/nord.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
       vim.g.nord_contrast = true
@@ -324,10 +327,10 @@ return {
     end,
   },
 
-  -- Everforest
+  -- Everforest (lazy-loaded)
   {
     "sainnhe/everforest",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
       vim.g.everforest_background = "medium"
@@ -340,10 +343,10 @@ return {
     end,
   },
 
-  -- Solarized Osaka
+  -- Solarized Osaka (lazy-loaded)
   {
     "craftzdog/solarized-osaka.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       transparent = true,

@@ -44,6 +44,9 @@ require("lazy").setup({
 		notify = false,
 	},
 	performance = {
+		cache = {
+			enabled = true,
+		},
 		rtp = {
 			disabled_plugins = {
 				"gzip",
@@ -53,6 +56,9 @@ require("lazy").setup({
 				"zipPlugin",
 				"tutor",
 				"rplugin",
+				"matchit",
+				"matchparen",
+				"spellfile",
 			},
 		},
 	},
