@@ -25,6 +25,9 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 
+-- Apply nvim-treesitter 1.0 compatibility shims BEFORE plugins load
+require("config.compat").setup()
+
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
@@ -63,9 +66,6 @@ require("lazy").setup({
 		},
 	},
 })
-
--- Apply nvim-treesitter 1.0 compatibility shims for older plugins (e.g., Telescope)
-require("config.compat").setup()
 
 -- Load persisted colorscheme IMMEDIATELY after lazy.setup()
 do
