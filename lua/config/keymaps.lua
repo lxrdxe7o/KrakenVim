@@ -1,4 +1,3 @@
--- AstroNvim-style keybindings
 -- This file contains core mappings that don't depend on plugins
 -- Plugin-specific mappings are defined in their respective plugin specs
 
@@ -50,7 +49,9 @@ map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Find keymaps" })
 map("n", "<leader>fm", "<cmd>Telescope marks<CR>", { desc = "Find marks" })
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Find recent files" })
 map("n", "<leader>fr", "<cmd>Telescope registers<CR>", { desc = "Find registers" })
-map("n", "<leader>fc", function() require("config.colorscheme").pick_colorscheme() end, { desc = "Find colorschemes" })
+map("n", "<leader>fc", function()
+	require("config.colorscheme").pick_colorscheme()
+end, { desc = "Find colorschemes" })
 map("n", "<leader>fC", "<cmd>Telescope commands<CR>", { desc = "Find commands" })
 map("n", "<leader>fw", "<cmd>Telescope grep_string<CR>", { desc = "Find word under cursor" })
 map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Find in buffer" })
@@ -112,16 +113,22 @@ map("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical size=80<CR>", { desc 
 -- ║                           UI/TOGGLE (<leader>u)                           ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
-map("n", "<leader>uc", function() require("config.colorscheme").pick_colorscheme() end, { desc = "Change colorscheme" })
-map("n", "<leader>ud", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = "Toggle diagnostics" })
+map("n", "<leader>uc", function()
+	require("config.colorscheme").pick_colorscheme()
+end, { desc = "Change colorscheme" })
+map("n", "<leader>ud", function()
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "Toggle diagnostics" })
 map("n", "<leader>ul", "<cmd>set relativenumber!<CR>", { desc = "Toggle relative line numbers" })
-map("n", "<leader>un", function() vim.o.number = not vim.o.number end, { desc = "Toggle line numbers" })
+map("n", "<leader>un", function()
+	vim.o.number = not vim.o.number
+end, { desc = "Toggle line numbers" })
 map("n", "<leader>us", "<cmd>set spell!<CR>", { desc = "Toggle spell check" })
 map("n", "<leader>uw", "<cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
 map("n", "<leader>ui", function()
-  if vim.lsp.inlay_hint then
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-  end
+	if vim.lsp.inlay_hint then
+		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+	end
 end, { desc = "Toggle inlay hints (global)" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗

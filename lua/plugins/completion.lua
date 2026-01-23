@@ -133,7 +133,7 @@ return {
           :with_move(cond.none())
           :with_del(cond.not_after_regex("xx"))
           :with_cr(cond.none()),
-        Rule("a", "a", "-vim"),
+
       })
 
       -- Integration with cmp

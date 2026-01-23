@@ -1,4 +1,7 @@
 return {
+	-- Wakatime tracking
+	{ "wakatime/vim-wakatime", lazy = false },
+
 	-- Discord Presence
 	{
 		"andweeb/presence.nvim",

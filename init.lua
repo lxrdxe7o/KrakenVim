@@ -1,4 +1,4 @@
--- KRAKENVIM - A modern, modular Neovim configuration
+-- KRAKENVIM - A very based & modular Neovim configuration
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
