@@ -25,9 +25,6 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 
--- Apply nvim-treesitter 1.0 compatibility shims BEFORE plugins load
-require("config.compat").setup()
-
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
