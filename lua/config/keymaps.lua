@@ -29,7 +29,7 @@ map("n", "[b", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 -- ║                         BUFFER MANAGEMENT (<leader>b)                     ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
-map("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "Switch buffer" })
+map("n", "<leader>bb", "<cmd>FzfLua buffers<CR>", { desc = "Switch buffer" })
 map("n", "<leader>bc", "<cmd>bdelete<CR>", { desc = "Close buffer" })
 map("n", "<leader>bC", "<cmd>bdelete!<CR>", { desc = "Force close buffer" })
 map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "New buffer" })
@@ -40,22 +40,22 @@ map("n", "<leader>bs", "<cmd>w<CR>", { desc = "Save buffer" })
 -- ║                           FIND/FILES (<leader>f)                          ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
-map("n", "<leader>fF", "<cmd>Telescope find_files hidden=true no_ignore=true<CR>", { desc = "Find all files" })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Find buffers" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Find text (grep)" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Find help" })
-map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Find keymaps" })
-map("n", "<leader>fm", "<cmd>Telescope marks<CR>", { desc = "Find marks" })
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Find recent files" })
-map("n", "<leader>fr", "<cmd>Telescope registers<CR>", { desc = "Find registers" })
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find files" })
+map("n", "<leader>fF", "<cmd>FzfLua files no_ignore=true hidden=true<CR>", { desc = "Find all files" })
+map("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Find buffers" })
+map("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Find text (grep)" })
+map("n", "<leader>fh", "<cmd>FzfLua help_tags<CR>", { desc = "Find help" })
+map("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", { desc = "Find keymaps" })
+map("n", "<leader>fm", "<cmd>FzfLua marks<CR>", { desc = "Find marks" })
+map("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", { desc = "Find recent files" })
+map("n", "<leader>fr", "<cmd>FzfLua registers<CR>", { desc = "Find registers" })
 map("n", "<leader>fc", function()
 	require("config.colorscheme").pick_colorscheme()
 end, { desc = "Find colorschemes" })
-map("n", "<leader>fC", "<cmd>Telescope commands<CR>", { desc = "Find commands" })
-map("n", "<leader>fw", "<cmd>Telescope grep_string<CR>", { desc = "Find word under cursor" })
-map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Find in buffer" })
-map("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", { desc = "Find diagnostics" })
+map("n", "<leader>fC", "<cmd>FzfLua commands<CR>", { desc = "Find commands" })
+map("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Find word under cursor" })
+map("n", "<leader>f/", "<cmd>FzfLua lgrep_curbuf<CR>", { desc = "Find in buffer" })
+map("n", "<leader>fd", "<cmd>FzfLua diagnostics_document<CR>", { desc = "Find diagnostics" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                              GIT (<leader>g)                              ║
@@ -63,11 +63,11 @@ map("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", { desc = "Find diagnost
 
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
 map("n", "<leader>gf", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit current file" })
-map("n", "<leader>gb", "<cmd>Telescope git_branches<CR>", { desc = "Git branches" })
-map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "Git commits" })
-map("n", "<leader>gC", "<cmd>Telescope git_bcommits<CR>", { desc = "Git buffer commits" })
-map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "Git status" })
-map("n", "<leader>gS", "<cmd>Telescope git_stash<CR>", { desc = "Git stash" })
+map("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", { desc = "Git branches" })
+map("n", "<leader>gc", "<cmd>FzfLua git_commits<CR>", { desc = "Git commits" })
+map("n", "<leader>gC", "<cmd>FzfLua git_bcommits<CR>", { desc = "Git buffer commits" })
+map("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { desc = "Git status" })
+map("n", "<leader>gS", "<cmd>FzfLua git_stash<CR>", { desc = "Git stash" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                              LSP (<leader>l)                              ║
@@ -98,7 +98,7 @@ map("n", "<leader>ph", "<cmd>Lazy health<CR>", { desc = "Health check" })
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
 map("n", "<leader>sc", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
-map("n", "<leader>sr", "<cmd>Telescope resume<CR>", { desc = "Resume last search" })
+map("n", "<leader>sr", "<cmd>FzfLua resume<CR>", { desc = "Resume last search" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                           TERMINAL (<leader>t)                            ║
@@ -211,8 +211,8 @@ map({ "n", "v" }, "<leader>D", '"_d', { desc = "Delete without yank" })
 map("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
 
 -- Quick access to frequently used commands
-map("n", "<leader><leader>", "<cmd>Telescope buffers<CR>", { desc = "Switch buffer" })
-map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Search in buffer" })
+map("n", "<leader><leader>", "<cmd>FzfLua buffers<CR>", { desc = "Switch buffer" })
+map("n", "<leader>/", "<cmd>FzfLua lgrep_curbuf<CR>", { desc = "Search in buffer" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                           LSP NAVIGATION (gX)                             ║

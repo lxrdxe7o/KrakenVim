@@ -251,7 +251,7 @@ return {
     keys = {
       { "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo" },
       { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev Todo" },
-      { "<leader>fT", "<cmd>TodoTelescope<cr>", desc = "Find Todos" },
+      { "<leader>fT", "<cmd>Trouble todo toggle<cr>", desc = "Find Todos" },
       { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
       { "<leader>xT", "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
     },

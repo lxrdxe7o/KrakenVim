@@ -66,7 +66,7 @@
 
 - ⚡ **Blazing Fast**: Aggressive lazy loading with header caching and sub-100ms startup
 - 🎨 **15 Beautiful Themes**: Persistent colorscheme picker with live preview
-- 🔍 **Powerful Fuzzy Finding**: Telescope with fzf-native for instant file/text search
+- 🔍 **Powerful Fuzzy Finding**: fzf-lua for lightning-fast file/text search (native fzf performance)
 - 💡 **Full LSP Support**: 15+ languages with auto-completion, diagnostics, and formatting
 - 🐛 **Complete Debugging**: DAP configurations for Python, JS/TS, Java, Go, Rust, C/C++
 - 🌳 **Treesitter 1.0**: Next-gen syntax highlighting and code understanding
@@ -115,7 +115,7 @@ _DAP UI showing Python debugging with breakpoints and variable inspection_
 ### Theme Picker
 
 ![Themes](assets/screenshots/themes.png)
-_Telescope colorscheme picker with live preview and persistent selection_
+_fzf-lua colorscheme picker with live preview and persistent selection_
 
 ### File Explorer
 
@@ -140,8 +140,9 @@ _Neo-tree file explorer with Git integration and file icons_
 
 ```bash
 # Better search/find
-ripgrep      # Fast grep alternative (required for Telescope live_grep)
+ripgrep      # Fast grep alternative (required for fzf-lua live_grep)
 fd           # Fast find alternative (better file finding)
+fzf          # Fuzzy finder (fzf-lua uses native fzf for performance)
 
 # Git tools
 lazygit      # Terminal UI for Git (required for <leader>gg)
@@ -149,8 +150,7 @@ lazygit      # Terminal UI for Git (required for <leader>gg)
 # File manager
 yazi         # Modern terminal file manager (required for <leader>-)
 
-# Build tools
-make         # Required for telescope-fzf-native compilation
+# Build tools (optional)
 gcc/clang    # C compiler for native extensions
 ```
 
@@ -767,7 +767,11 @@ KrakenVim includes 15 carefully selected themes with a persistent picker:
 #### Theme Picker
 
 ```vim
-:Telescope colorscheme
+" Via keymap
+<leader>fc
+
+" Or via command
+:FzfLua colorschemes
 ```
 
 - **Live preview**: See theme before selecting
@@ -889,22 +893,23 @@ All themes configured with:
 
 ### 🔍 Navigation & Search
 
-| Plugin                      | Purpose                                 |
-| --------------------------- | --------------------------------------- |
-| `telescope.nvim`            | Fuzzy finder for files, grep, LSP, etc. |
-| `telescope-fzf-native.nvim` | C-based fzf algorithm for speed         |
-| `telescope-ui-select.nvim`  | Use Telescope for vim.ui.select         |
-| `neo-tree.nvim`             | File explorer with Git integration      |
-| `gitsigns.nvim`             | Git decorations and hunk operations     |
-| `yazi.nvim`                 | Terminal file manager integration       |
+| Plugin           | Purpose                                      |
+| ---------------- | -------------------------------------------- |
+| `fzf-lua`        | Lightning-fast fuzzy finder (native fzf)     |
+| `telescope.nvim` | Minimal - only for plugin dependencies       |
+| `dressing.nvim`  | Uses fzf-lua for vim.ui.select               |
+| `neo-tree.nvim`  | File explorer with Git integration           |
+| `gitsigns.nvim`  | Git decorations and hunk operations          |
+| `yazi.nvim`      | Terminal file manager integration            |
 
-**Telescope Pickers:**
+**fzf-lua Pickers:**
 
 - Find files (hidden + no_ignore)
 - Live grep (ripgrep)
 - Buffers, recent files
 - LSP symbols, references, diagnostics
 - Help tags, keymaps
+- Git branches, commits, status
 - Colorscheme picker (with persistence)
 
 ---
@@ -997,20 +1002,28 @@ All themes configured with:
 
 ### File Navigation (`<leader>f`)
 
-| Key                | Action                        |
-| ------------------ | ----------------------------- |
-| `<leader>ff`       | Find files (Telescope)        |
-| `<leader>fg`       | Live grep (Telescope)         |
-| `<leader>fb`       | Buffers (Telescope)           |
-| `<leader>fh`       | Help tags (Telescope)         |
-| `<leader>fr`       | Recent files (Telescope)      |
-| `<leader>fk`       | Keymaps (Telescope)           |
-| `<leader>fd`       | Diagnostics (Telescope)       |
-| `<leader>fs`       | Document symbols (Telescope)  |
-| `<leader>fw`       | Workspace symbols (Telescope) |
-| `<leader>fT`       | Find TODOs (Telescope)        |
-| `<leader><leader>` | Quick buffer switcher         |
-| `<leader>/`        | Search in current buffer      |
+| Key                | Action                     |
+| ------------------ | -------------------------- |
+| `<leader>ff`       | Find files                 |
+| `<leader>fF`       | Find all files (no ignore) |
+| `<leader>fg`       | Live grep                  |
+| `<leader>fb`       | Buffers                    |
+| `<leader>fh`       | Help tags                  |
+| `<leader>fo`       | Recent files (oldfiles)    |
+| `<leader>fr`       | Registers                  |
+| `<leader>fk`       | Keymaps                    |
+| `<leader>fd`       | Document diagnostics       |
+| `<leader>fD`       | Workspace diagnostics      |
+| `<leader>fs`       | Document symbols           |
+| `<leader>fw`       | Grep word under cursor     |
+| `<leader>fW`       | Grep WORD under cursor     |
+| `<leader>fc`       | Colorscheme picker         |
+| `<leader>fC`       | Commands                   |
+| `<leader>fm`       | Marks                      |
+| `<leader>fT`       | Find TODOs (Trouble)       |
+| `<leader><leader>` | Quick buffer switcher      |
+| `<leader>/`        | Search in current buffer   |
+| `<leader>sr`       | Resume last search         |
 
 ---
 
@@ -1018,15 +1031,15 @@ All themes configured with:
 
 #### Navigation
 
-| Key     | Action                       |
-| ------- | ---------------------------- |
-| `gd`    | Go to definition             |
-| `gD`    | Go to declaration            |
-| `gr`    | Go to references (Telescope) |
-| `gi`    | Go to implementation         |
-| `gy`    | Go to type definition        |
-| `K`     | Hover documentation          |
-| `<C-k>` | Signature help               |
+| Key     | Action                      |
+| ------- | --------------------------- |
+| `gd`    | Go to definition            |
+| `gD`    | Go to declaration           |
+| `gr`    | Go to references (fzf-lua)  |
+| `gi`    | Go to implementation        |
+| `gy`    | Go to type definition       |
+| `K`     | Hover documentation         |
+| `<C-k>` | Signature help              |
 
 #### Actions
 
@@ -1039,7 +1052,7 @@ All themes configured with:
 | `<leader>lh` | Signature help           |
 | `<leader>li` | LSP Info                 |
 | `<leader>lI` | Mason Info               |
-| `<leader>lR` | References (Telescope)   |
+| `<leader>lR` | References (fzf-lua)     |
 | `<leader>ls` | Document symbols         |
 | `<leader>lS` | Workspace symbols        |
 
@@ -1380,7 +1393,11 @@ _Only available in Rust files_
 KrakenVim includes a **persistent colorscheme picker**:
 
 ```vim
-:Telescope colorscheme
+" Via keymap (recommended)
+<leader>fc
+
+" Or via command
+:FzfLua colorschemes
 ```
 
 **Features:**
@@ -1417,7 +1434,7 @@ All themes configured with:
 - 🎨 LSP semantic token highlighting
 - 🌳 Full Treesitter integration
 - 🎯 Terminal color support
-- 🔍 Telescope borderless pickers
+- 🔍 fzf-lua borderless pickers
 
 ### Manual Theme Change
 
@@ -1446,7 +1463,7 @@ All themes configured with:
    ```
 
 2. Restart Neovim
-3. Select via `:Telescope colorscheme`
+3. Select via `<leader>fc` or `:FzfLua colorschemes`
 
 ---
 
@@ -1783,11 +1800,12 @@ Modify existing plugin config in `lua/plugins/<category>.lua`:
 
 ```lua
 {
-  "nvim-telescope/telescope.nvim",
+  "ibhagwan/fzf-lua",
   opts = {
-    defaults = {
-      -- Override defaults
-      layout_strategy = "vertical",
+    winopts = {
+      -- Override window options
+      height = 0.9,
+      width = 0.9,
     },
   },
 },
@@ -1797,16 +1815,30 @@ Modify existing plugin config in `lua/plugins/<category>.lua`:
 
 ## 🔧 Troubleshooting
 
-### Treesitter 1.0 Compatibility
+### fzf-lua Not Working
 
-**Issue**: Telescope errors about `ft_to_lang` not found
+**Issue**: fzf-lua commands fail or show no results
 
-**Solution**: KrakenVim includes a compatibility shim in `init.lua`:
+**Solution**:
 
-```lua
--- Already handled in init.lua lines 21-44
--- No action needed
-```
+1. Ensure `fzf` is installed:
+   ```bash
+   # Arch
+   sudo pacman -S fzf
+
+   # Ubuntu/Debian
+   sudo apt install fzf
+
+   # macOS
+   brew install fzf
+   ```
+
+2. Ensure `ripgrep` and `fd` are installed for grep and file finding
+
+3. Check fzf-lua health:
+   ```vim
+   :checkhealth fzf-lua
+   ```
 
 ### Mason Installation Failures
 
@@ -1941,7 +1973,10 @@ cat ~/.local/share/nvim/colorscheme.txt
 **Fix**:
 
 ```vim
-:Telescope colorscheme
+" Use the persistent colorscheme picker
+<leader>fc
+" Or
+:FzfLua colorschemes
 " Select theme and press Enter (not Escape)
 ```
 

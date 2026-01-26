@@ -23,10 +23,10 @@ return {
 
 		-- Customize buttons
 		dashboard.section.buttons.val = {
-			dashboard.button("f", "🔍  Find file", "<cmd>Telescope find_files<cr>"),
+			dashboard.button("f", "🔍  Find file", "<cmd>FzfLua files<cr>"),
 			dashboard.button("n", "📄  New file", "<cmd>ene <BAR> startinsert<cr>"),
-			dashboard.button("r", "🕒  Recent files", "<cmd>Telescope oldfiles<cr>"),
-			dashboard.button("g", "🔎  Find text", "<cmd>Telescope live_grep<cr>"),
+			dashboard.button("r", "🕒  Recent files", "<cmd>FzfLua oldfiles<cr>"),
+			dashboard.button("g", "🔎  Find text", "<cmd>FzfLua live_grep<cr>"),
 			dashboard.button("c", "⚙️  Config", "<cmd>e $MYVIMRC<cr>"),
 			dashboard.button("i", "🎨  Next header", "<cmd>AlphaHeaderNext<cr>"),
 			dashboard.button("l", "💤  Lazy", "<cmd>Lazy<cr>"),
@@ -245,11 +245,26 @@ return {
 		},
 	},
 
-	-- Dressing: Better UI inputs
+	-- Dressing: Better UI inputs (uses fzf-lua for selections)
 	{
 		"stevearc/dressing.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			select = {
+				enabled = true,
+				backend = { "fzf_lua", "builtin" },
+				fzf_lua = {
+					winopts = {
+						height = 0.5,
+						width = 0.5,
+					},
+				},
+			},
+			input = {
+				enabled = true,
+				border = "rounded",
+			},
+		},
 	},
 
 	-- Web devicons

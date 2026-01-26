@@ -87,7 +87,7 @@ return {
         -- Navigation
         map("gd", vim.lsp.buf.definition, "Go to Definition")
         map("gD", vim.lsp.buf.declaration, "Go to Declaration")
-        map("gr", "<cmd>Telescope lsp_references<cr>", "Go to References")
+        map("gr", "<cmd>FzfLua lsp_references<cr>", "Go to References")
         map("gi", vim.lsp.buf.implementation, "Go to Implementation")
         map("gy", vim.lsp.buf.type_definition, "Go to Type Definition")
         map("K", vim.lsp.buf.hover, "Hover Documentation")
@@ -101,9 +101,9 @@ return {
         map("<leader>li", "<cmd>LspInfo<cr>", "LSP Info")
         map("<leader>lI", "<cmd>Mason<cr>", "Mason Info")
         map("<leader>lr", vim.lsp.buf.rename, "Rename")
-        map("<leader>lR", "<cmd>Telescope lsp_references<cr>", "References")
-        map("<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols")
-        map("<leader>lS", "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols")
+        map("<leader>lR", "<cmd>FzfLua lsp_references<cr>", "References")
+        map("<leader>ls", "<cmd>FzfLua lsp_document_symbols<cr>", "Document Symbols")
+        map("<leader>lS", "<cmd>FzfLua lsp_workspace_symbols<cr>", "Workspace Symbols")
 
         -- Toggle inlay hints
         map("<leader>uh", function()

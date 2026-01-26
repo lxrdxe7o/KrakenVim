@@ -1,70 +1,109 @@
 return {
-	-- Telescope
+	-- FZF-Lua: Fast fuzzy finder (primary picker)
+	{
+		"ibhagwan/fzf-lua",
+		cmd = "FzfLua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		keys = {
+			-- File pickers
+			{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find Files" },
+			{ "<leader>fF", "<cmd>FzfLua files no_ignore=true hidden=true<cr>", desc = "Find All Files" },
+			{ "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+			{ "<leader>fo", "<cmd>FzfLua oldfiles<cr>", desc = "Recent Files" },
+			{ "<leader>fr", "<cmd>FzfLua registers<cr>", desc = "Registers" },
+			-- Search
+			{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live Grep" },
+			{ "<leader>fw", "<cmd>FzfLua grep_cword<cr>", desc = "Grep Word Under Cursor" },
+			{ "<leader>fW", "<cmd>FzfLua grep_cWORD<cr>", desc = "Grep WORD Under Cursor" },
+			{ "<leader>f/", "<cmd>FzfLua lgrep_curbuf<cr>", desc = "Search in Buffer" },
+			{ "<leader>/", "<cmd>FzfLua lgrep_curbuf<cr>", desc = "Search in Buffer" },
+			-- LSP
+			{ "<leader>fd", "<cmd>FzfLua diagnostics_document<cr>", desc = "Document Diagnostics" },
+			{ "<leader>fD", "<cmd>FzfLua diagnostics_workspace<cr>", desc = "Workspace Diagnostics" },
+			{ "<leader>fs", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
+			-- Help & Misc
+			{ "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
+			{ "<leader>fk", "<cmd>FzfLua keymaps<cr>", desc = "Keymaps" },
+			{ "<leader>fm", "<cmd>FzfLua marks<cr>", desc = "Marks" },
+			{ "<leader>fC", "<cmd>FzfLua commands<cr>", desc = "Commands" },
+			-- Git
+			{ "<leader>gb", "<cmd>FzfLua git_branches<cr>", desc = "Git Branches" },
+			{ "<leader>gc", "<cmd>FzfLua git_commits<cr>", desc = "Git Commits" },
+			{ "<leader>gC", "<cmd>FzfLua git_bcommits<cr>", desc = "Git Buffer Commits" },
+			{ "<leader>gs", "<cmd>FzfLua git_status<cr>", desc = "Git Status" },
+			{ "<leader>gS", "<cmd>FzfLua git_stash<cr>", desc = "Git Stash" },
+			-- Quick access
+			{ "<leader><leader>", "<cmd>FzfLua buffers<cr>", desc = "Switch Buffer" },
+			{ "<leader>sr", "<cmd>FzfLua resume<cr>", desc = "Resume Last Search" },
+		},
+		opts = {
+			-- Global fzf options
+			fzf_opts = {
+				["--layout"] = "reverse",
+				["--info"] = "inline",
+			},
+			-- Window options
+			winopts = {
+				height = 0.85,
+				width = 0.80,
+				row = 0.35,
+				col = 0.50,
+				border = "rounded",
+				preview = {
+					layout = "flex",
+					flip_columns = 120,
+					scrollbar = "float",
+				},
+			},
+			-- Keymaps inside fzf window
+			keymap = {
+				builtin = {
+					["<C-d>"] = "preview-page-down",
+					["<C-u>"] = "preview-page-up",
+					["<C-j>"] = "down",
+					["<C-k>"] = "up",
+				},
+				fzf = {
+					["ctrl-q"] = "select-all+accept",
+					["ctrl-d"] = "preview-page-down",
+					["ctrl-u"] = "preview-page-up",
+				},
+			},
+			-- File picker options
+			files = {
+				hidden = true,
+				follow = true,
+				fd_opts = "--type f --hidden --follow --exclude .git --exclude node_modules",
+			},
+			-- Grep options
+			grep = {
+				hidden = true,
+				rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden -g '!.git' -g '!node_modules'",
+			},
+			-- Oldfiles
+			oldfiles = {
+				cwd_only = false,
+				include_current_session = true,
+			},
+		},
+	},
+
+	-- Telescope (minimal - only for plugin dependencies like compiler.nvim)
 	{
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
-		cmd = "Telescope",
+		lazy = true, -- Only load when explicitly needed by other plugins
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		config = function()
-			local telescope = require("telescope")
-			local actions = require("telescope.actions")
-
-			telescope.setup({
+			require("telescope").setup({
 				defaults = {
-					mappings = {
-						i = {
-							["<C-j>"] = actions.move_selection_next,
-							["<C-k>"] = actions.move_selection_previous,
-							["<Esc>"] = actions.close,
-						},
-					},
 					file_ignore_patterns = { "node_modules", ".git/" },
 				},
-				pickers = {
-					-- show hidden files
-					find_files = {
-						hidden = true,
-						no_ignore = true,
-					},
-					live_grep = {
-						additional_args = function()
-							return { "--hidden", "--no-ignore" }
-						end,
-					},
-				},
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown(),
-					},
-				},
 			})
-
-			pcall(telescope.load_extension, "fzf")
-			pcall(telescope.load_extension, "ui-select")
 		end,
-		keys = {
-			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-			{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-			{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-			{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
-			{ "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
-			{ "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-			{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
-			{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
-			{ "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols" },
-			{ "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-			{ "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search in Buffer" },
-		},
+		-- No keys - fzf-lua handles all picker keymaps
 	},
 
 	-- Yazi: File manager

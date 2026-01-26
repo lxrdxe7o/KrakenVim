@@ -55,59 +55,46 @@ function M.load_saved()
   M.apply_colorscheme(saved)
 end
 
--- Telescope picker with live preview and persistence
+-- FzfLua picker with live preview and persistence
 function M.pick_colorscheme()
-  local ok, telescope = pcall(require, "telescope.builtin")
+  local ok, fzf = pcall(require, "fzf-lua")
   if not ok then
-    vim.notify("Telescope not available", vim.log.levels.ERROR)
+    vim.notify("FzfLua not available", vim.log.levels.ERROR)
     return
   end
-
-  local actions = require("telescope.actions")
-  local action_state = require("telescope.actions.state")
 
   -- Store current colorscheme for potential revert
   local current = vim.g.colors_name or M.default_colorscheme
 
-  telescope.colorscheme({
-    enable_preview = true,
-    attach_mappings = function(prompt_bufnr, map)
+  fzf.colorschemes({
+    winopts = {
+      height = 0.5,
+      width = 0.35,
+      row = 0.4,
+    },
+    actions = {
       -- On Enter - save and apply the selected colorscheme
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        
-        -- Use vim.schedule to ensure everything is done after picker closes
-        vim.schedule(function()
-          if selection then
-            local theme = selection.value or selection[1]
-            -- Apply the colorscheme
-            if M.apply_colorscheme(theme) then
-              -- Save to file
-              if M.save_colorscheme(theme) then
-                vim.notify("✓ Saved: " .. theme, vim.log.levels.INFO)
-              else
-                vim.notify("✗ Failed to save", vim.log.levels.ERROR)
-              end
+      ["default"] = function(selected)
+        if selected and selected[1] then
+          local theme = selected[1]
+          -- Apply the colorscheme
+          if M.apply_colorscheme(theme) then
+            -- Save to file
+            if M.save_colorscheme(theme) then
+              vim.notify("✓ Saved: " .. theme, vim.log.levels.INFO)
+            else
+              vim.notify("✗ Failed to save", vim.log.levels.ERROR)
             end
           end
-        end)
-      end)
-
+        end
+      end,
       -- On Escape - revert to original and don't save
-      local revert = function()
-        actions.close(prompt_bufnr)
+      ["esc"] = function()
         vim.schedule(function()
           M.apply_colorscheme(current)
         end)
-      end
-      
-      map("i", "<Esc>", revert)
-      map("n", "<Esc>", revert)
-      map("n", "q", revert)
-
-      return true
-    end,
+      end,
+    },
   })
 end
 
