@@ -5,8 +5,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false,
     build = ":TSUpdate",
-    lazy = false,
-    priority = 1000,
+    event = { "BufReadPre", "BufNewFile" },
+    cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
     config = function()
       -- In Neovim 0.10+, treesitter highlighting is built-in and enabled by default
       -- We just need to ensure parsers are installed
@@ -170,6 +170,7 @@ return {
 
       -- Register all AstroNvim-style group labels
       wk.add({
+        { "<leader>A", group = "AI/Claude" },
         { "<leader>b", group = "Buffers" },
         { "<leader>c", group = "Code" },
         { "<leader>d", group = "Debug" },

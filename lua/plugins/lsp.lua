@@ -117,6 +117,14 @@ return {
 
       local lspconfig = require("lspconfig")
 
+      -- Helper to reduce boilerplate: merges base config with overrides
+      local function make_config(overrides)
+        return vim.tbl_deep_extend("force", {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        }, overrides or {})
+      end
+
       -- Setup mason-lspconfig with handlers
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -139,17 +147,12 @@ return {
         handlers = {
           -- Default handler for all servers
           function(server_name)
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
-            })
+            lspconfig[server_name].setup(make_config())
           end,
 
           -- Lua
           ["lua_ls"] = function()
-            lspconfig.lua_ls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.lua_ls.setup(make_config({
               settings = {
                 Lua = {
                   runtime = { version = "LuaJIT" },
@@ -163,14 +166,12 @@ return {
                   completion = { callSnippet = "Replace" },
                 },
               },
-            })
+            }))
           end,
 
           -- TypeScript/JavaScript
           ["ts_ls"] = function()
-            lspconfig.ts_ls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.ts_ls.setup(make_config({
               settings = {
                 typescript = {
                   inlayHints = {
@@ -191,14 +192,12 @@ return {
                   },
                 },
               },
-            })
+            }))
           end,
 
           -- Python
           ["pyright"] = function()
-            lspconfig.pyright.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.pyright.setup(make_config({
               settings = {
                 python = {
                   analysis = {
@@ -208,14 +207,12 @@ return {
                   },
                 },
               },
-            })
+            }))
           end,
 
           -- Go
           ["gopls"] = function()
-            lspconfig.gopls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.gopls.setup(make_config({
               settings = {
                 gopls = {
                   gofumpt = true,
@@ -236,14 +233,12 @@ return {
                   staticcheck = true,
                 },
               },
-            })
+            }))
           end,
 
           -- C/C++
           ["clangd"] = function()
-            lspconfig.clangd.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.clangd.setup(make_config({
               cmd = {
                 "clangd",
                 "--background-index",
@@ -251,7 +246,7 @@ return {
                 "--header-insertion=iwyu",
                 "--completion-style=detailed",
               },
-            })
+            }))
           end,
 
           -- JSON
@@ -261,11 +256,7 @@ return {
             if ok then
               settings.json.schemas = schemastore.json.schemas()
             end
-            lspconfig.jsonls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
-              settings = settings,
-            })
+            lspconfig.jsonls.setup(make_config({ settings = settings }))
           end,
 
           -- YAML
@@ -276,20 +267,14 @@ return {
               settings.yaml.schemaStore = { enable = false, url = "" }
               settings.yaml.schemas = schemastore.yaml.schemas()
             end
-            lspconfig.yamlls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
-              settings = settings,
-            })
+            lspconfig.yamlls.setup(make_config({ settings = settings }))
           end,
 
           -- Emmet
           ["emmet_ls"] = function()
-            lspconfig.emmet_ls.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
+            lspconfig.emmet_ls.setup(make_config({
               filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
-            })
+            }))
           end,
 
           -- Skip jdtls (handled by nvim-jdtls in ftplugin)

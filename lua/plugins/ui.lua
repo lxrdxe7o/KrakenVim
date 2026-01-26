@@ -43,29 +43,12 @@ return {
 		local function refresh_dashboard()
 			-- Update the existing dashboard object instead of creating a new one
 			HeaderManager.apply_to_dashboard(dashboard)
-			
+
 			-- Re-setup alpha with updated config
 			alpha.setup(dashboard.config)
-			
-			-- Close any existing alpha buffers to force a clean state
-			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-				if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
-					-- Close all windows showing this buffer first
-					for _, win in ipairs(vim.api.nvim_list_wins()) do
-						if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == buf then
-							pcall(vim.api.nvim_win_close, win, true)
-						end
-					end
-					-- Then delete the buffer
-					pcall(vim.api.nvim_buf_delete, buf, { force = true })
-				end
-			end
-			
-			-- Use vim.schedule to ensure the buffer/window deletion completes
-			vim.schedule(function()
-				-- Now open alpha with the Alpha command
-				vim.cmd("Alpha")
-			end)
+
+			-- Simply redraw the existing alpha buffer if visible
+			pcall(vim.cmd.AlphaRedraw)
 		end
 
 		-- Create user commands for header cycling

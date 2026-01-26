@@ -132,14 +132,14 @@ map("n", "<leader>ui", function()
 end, { desc = "Toggle inlay hints (global)" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
--- ║                          ALPHA DASHBOARD (<leader>a)                      ║
+-- ║                          ALPHA DASHBOARD (<leader>A)                      ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
-map("n", "<leader>ah", "<cmd>AlphaDashboard<CR>", { desc = "Open Alpha Dashboard" })
-map("n", "<leader>an", "<cmd>AlphaHeaderNext<CR>", { desc = "Next header" })
-map("n", "<leader>ap", "<cmd>AlphaHeaderPrev<CR>", { desc = "Previous header" })
-map("n", "<leader>ar", "<cmd>AlphaHeaderRandom<CR>", { desc = "Random header" })
-map("n", "<leader>ai", "<cmd>AlphaHeaderName<CR>", { desc = "Show header name" })
+map("n", "<leader>Ah", "<cmd>AlphaDashboard<CR>", { desc = "Open Alpha Dashboard" })
+map("n", "<leader>An", "<cmd>AlphaHeaderNext<CR>", { desc = "Next header" })
+map("n", "<leader>Ap", "<cmd>AlphaHeaderPrev<CR>", { desc = "Previous header" })
+map("n", "<leader>Ar", "<cmd>AlphaHeaderRandom<CR>", { desc = "Random header" })
+map("n", "<leader>Ai", "<cmd>AlphaHeaderName<CR>", { desc = "Show header name" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                         WRITE/SAVE (<leader>w)                            ║
@@ -179,11 +179,7 @@ map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 map("v", "<", "<gv", { desc = "Indent left" })
 map("v", ">", ">gv", { desc = "Indent right" })
 
--- Move lines up/down
-map("n", "<A-j>", "<cmd>m .+1<CR>==", { desc = "Move line down" })
-map("n", "<A-k>", "<cmd>m .-2<CR>==", { desc = "Move line up" })
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+-- Note: Alt+hjkl line movement is handled by mini.move plugin (editor.lua)
 
 -- Save/Quit shortcuts
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
@@ -231,7 +227,3 @@ map("n", "gy", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
-
--- Quick split shortcuts (AstroNvim style)
-map("n", "|", "<cmd>vsplit<CR>", { desc = "Vertical split" })
-map("n", "-", "<cmd>split<CR>", { desc = "Horizontal split" })
