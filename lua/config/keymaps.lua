@@ -132,14 +132,14 @@ map("n", "<leader>ui", function()
 end, { desc = "Toggle inlay hints (global)" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
--- ║                          ALPHA DASHBOARD (<leader>A)                      ║
+-- ║                        DASHBOARD (Snacks) (<leader>A)                     ║
 -- ╚══════════════════════════════════════════════════════════════════════════╝
 
-map("n", "<leader>Ah", "<cmd>AlphaDashboard<CR>", { desc = "Open Alpha Dashboard" })
-map("n", "<leader>An", "<cmd>AlphaHeaderNext<CR>", { desc = "Next header" })
-map("n", "<leader>Ap", "<cmd>AlphaHeaderPrev<CR>", { desc = "Previous header" })
-map("n", "<leader>Ar", "<cmd>AlphaHeaderRandom<CR>", { desc = "Random header" })
-map("n", "<leader>Ai", "<cmd>AlphaHeaderName<CR>", { desc = "Show header name" })
+map("n", "<leader>Ah", "<cmd>SnacksDashboard<CR>", { desc = "Open Dashboard" })
+map("n", "<leader>An", "<cmd>SnacksDashboardImageNext<CR>", { desc = "Next image" })
+map("n", "<leader>Ap", "<cmd>SnacksDashboardImagePrev<CR>", { desc = "Previous image" })
+map("n", "<leader>Ar", "<cmd>SnacksDashboardImageRandom<CR>", { desc = "Random image" })
+map("n", "<leader>Ai", "<cmd>SnacksDashboardImageName<CR>", { desc = "Show image name" })
 
 -- ╔══════════════════════════════════════════════════════════════════════════╗
 -- ║                         WRITE/SAVE (<leader>w)                            ║

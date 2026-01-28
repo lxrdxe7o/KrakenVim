@@ -2,155 +2,8 @@
 -- Note: Colorscheme plugins are in lua/plugins/colorscheme.lua
 
 return {
-	-- Alpha: Dashboard
-	{
-		"goolord/alpha-nvim",
-		-- Load on VimEnter but defer actual display
-		event = "VimEnter",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-	config = function()
-		local alpha = require("alpha")
-		local dashboard = require("alpha.themes.dashboard")
-		local HeaderManager = require("utils.header_manager")
-
-		-- Initialize header manager
-		HeaderManager.init()
-
-		-- Apply current header to dashboard
-		HeaderManager.apply_to_dashboard(dashboard)
-
-		-- Customize buttons
-		dashboard.section.buttons.val = {
-			dashboard.button("f", "🔍  Find file", "<cmd>FzfLua files<cr>"),
-			dashboard.button("n", "📄  New file", "<cmd>ene <BAR> startinsert<cr>"),
-			dashboard.button("r", "🕒  Recent files", "<cmd>FzfLua oldfiles<cr>"),
-			dashboard.button("g", "🔎  Find text", "<cmd>FzfLua live_grep<cr>"),
-			dashboard.button("c", "⚙️  Config", "<cmd>e $MYVIMRC<cr>"),
-			dashboard.button("i", "🎨  Next header", "<cmd>AlphaHeaderNext<cr>"),
-			dashboard.button("l", "💤  Lazy", "<cmd>Lazy<cr>"),
-			dashboard.button("q", "❌  Quit", "<cmd>qa<cr>"),
-		}
-
-		-- Dynamic footer with plugin stats
-		dashboard.section.footer.opts.hl = "AlphaFooter"
-		dashboard.section.footer.val = "⚡ Welcome to Neovim"
-
-		alpha.setup(dashboard.config)
-
-		-- Helper function to refresh the dashboard
-		local function refresh_dashboard()
-			-- Update the existing dashboard object instead of creating a new one
-			HeaderManager.apply_to_dashboard(dashboard)
-
-			-- Re-setup alpha with updated config
-			alpha.setup(dashboard.config)
-
-			-- Simply redraw the existing alpha buffer if visible
-			pcall(vim.cmd.AlphaRedraw)
-		end
-
-		-- Create user commands for header cycling
-		vim.api.nvim_create_user_command("AlphaHeaderNext", function()
-			HeaderManager.next()
-			HeaderManager.save_state()
-			refresh_dashboard()
-		end, { desc = "Cycle to next header" })
-
-		vim.api.nvim_create_user_command("AlphaHeaderPrev", function()
-			HeaderManager.prev()
-			HeaderManager.save_state()
-			refresh_dashboard()
-		end, { desc = "Cycle to previous header" })
-
-		vim.api.nvim_create_user_command("AlphaHeaderRandom", function()
-			HeaderManager.random()
-			HeaderManager.save_state()
-			refresh_dashboard()
-		end, { desc = "Jump to random header" })
-
-		vim.api.nvim_create_user_command("AlphaHeaderName", function()
-			local name = HeaderManager.get_current_name()
-			local count = HeaderManager.get_count()
-			vim.notify(
-				string.format("Current header: %s (%d/%d)", name, HeaderManager.current_index, count),
-				vim.log.levels.INFO
-			)
-		end, { desc = "Show current header name" })
-
-		-- Command to rebuild header cache
-		vim.api.nvim_create_user_command("HeaderCacheRebuild", function()
-			HeaderManager.rebuild_cache()
-			refresh_dashboard()
-		end, { desc = "Rebuild header cache" })
-
-		-- Autocmd to update footer after startup stats are available
-		vim.api.nvim_create_autocmd("User", {
-			once = true,
-			pattern = "LazyVimStarted",
-			callback = function()
-				local stats = require("lazy").stats()
-				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-				dashboard.section.footer.val = "⚡ Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
-				
-				-- Only redraw if there's a valid alpha buffer visible
-				for _, win in ipairs(vim.api.nvim_list_wins()) do
-					if vim.api.nvim_win_is_valid(win) then
-						local buf = vim.api.nvim_win_get_buf(win)
-						if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
-							pcall(vim.cmd.AlphaRedraw)
-							break
-						end
-					end
-				end
-			end,
-		})
-
-		-- Helper to check if a buffer is a "real" buffer (not empty/scratch)
-		local function is_real_buffer(buf)
-			if not vim.api.nvim_buf_is_valid(buf) then return false end
-			if not vim.bo[buf].buflisted then return false end
-			if vim.bo[buf].filetype == "alpha" then return false end
-			-- Check if buffer has a name or has been modified
-			local name = vim.api.nvim_buf_get_name(buf)
-			if name ~= "" then return true end
-			-- Check if buffer has content
-			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-			if #lines > 1 or (#lines == 1 and lines[1] ~= "") then return true end
-			return false
-		end
-
-		-- Create a command to toggle Alpha dashboard
-		vim.api.nvim_create_user_command("AlphaDashboard", function()
-			-- Check if current buffer is alpha
-			local current_buf = vim.api.nvim_get_current_buf()
-			if vim.bo[current_buf].filetype == "alpha" then
-				-- If on alpha, go to a real buffer if available
-				local alt_buf = vim.fn.bufnr("#")
-				if alt_buf ~= -1 and is_real_buffer(alt_buf) then
-					vim.cmd("buffer " .. alt_buf)
-					return
-				end
-				-- Find any real buffer
-				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-					if is_real_buffer(buf) then
-						vim.cmd("buffer " .. buf)
-						return
-					end
-				end
-				-- No real buffer found, just notify and stay on alpha
-				vim.notify("No other buffers to switch to", vim.log.levels.INFO)
-			else
-				-- Not on alpha, open it
-				refresh_dashboard()
-			end
-		end, { desc = "Toggle Alpha Dashboard" })
-	end,
-		keys = {
-			{ "<leader>h", "<cmd>AlphaDashboard<cr>", desc = "Home (Alpha Dashboard)" },
-		},
-	},
+	-- NOTE: Dashboard moved to snacks.nvim in lua/plugins/ai.lua
+	-- Alpha.nvim is disabled in favor of snacks.nvim dashboard
 
 	-- Lualine: Statusline
 	{
@@ -206,12 +59,13 @@ return {
 	},
 
 	-- Noice: UI for messages, cmdline, popupmenu
+	-- Now uses snacks.nvim notifier instead of nvim-notify
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
+			"folke/snacks.nvim", -- Using snacks notifier
 		},
 		opts = {
 			lsp = {
@@ -228,24 +82,20 @@ return {
 				inc_rename = false,
 				lsp_doc_border = true,
 			},
+			-- Route notifications to snacks.nvim notifier
+			routes = {
+				{
+					filter = { event = "notify" },
+					view = "notify",
+				},
+			},
 		},
 	},
 
-	-- Nvim-notify
-	{
-		"rcarriga/nvim-notify",
-		opts = {
-			timeout = 3000,
-			max_height = function()
-				return math.floor(vim.o.lines * 0.75)
-			end,
-			max_width = function()
-				return math.floor(vim.o.columns * 0.75)
-			end,
-		},
-	},
+	-- NOTE: nvim-notify disabled in favor of snacks.nvim notifier (lua/plugins/ai.lua)
 
-	-- Dressing: Better UI inputs (uses fzf-lua for selections)
+	-- Dressing: Better UI selections (uses fzf-lua)
+	-- NOTE: Input is handled by snacks.nvim
 	{
 		"stevearc/dressing.nvim",
 		event = "VeryLazy",
@@ -261,8 +111,316 @@ return {
 				},
 			},
 			input = {
-				enabled = true,
-				border = "rounded",
+				enabled = false, -- Using snacks.nvim input
+			},
+		},
+	},
+
+	-- Snacks.nvim: Dashboard, notifications, terminal, and more
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		config = function()
+			local ImgManager = require("utils.img_manager")
+
+			-- Initialize image manager
+			ImgManager.init()
+
+			local Snacks = require("snacks")
+
+			-- Build the chafa command for current image
+			local function get_image_cmd()
+				local img_path = ImgManager.get_current()
+				if not img_path then
+					return "echo 'No images found in img/ folder'"
+				end
+				-- Use chafa to render image as colored unicode
+				-- --size restricts output dimensions (cols x rows)
+				-- --format symbols uses unicode block/braille characters
+				return string.format("chafa --size=48x20 --animate=off %q", img_path)
+			end
+
+			-- Menu items with modern icons and styling
+			local menu_items = {
+				{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+				{ icon = " ", key = "f", desc = "Find File", action = ":FzfLua files" },
+				{ icon = " ", key = "g", desc = "Find Text", action = ":FzfLua live_grep" },
+				{ icon = " ", key = "r", desc = "Recent Files", action = ":FzfLua oldfiles" },
+				{ icon = " ", key = "c", desc = "Config", action = ":e $MYVIMRC" },
+				{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+				{ icon = " ", key = "i", desc = "Cycle Image", action = ":SnacksDashboardImageNext" },
+				{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+			}
+
+			-- Custom key format with icon
+			local function format_key(item)
+				return {
+					{ "[", hl = "SnacksDashboardSpecial" },
+					{ item.key, hl = "SnacksDashboardKey" },
+					{ "]", hl = "SnacksDashboardSpecial" },
+				}
+			end
+
+			local function format_icon(item)
+				return { { item.icon, hl = "SnacksDashboardIcon" } }
+			end
+
+			Snacks.setup({
+				-- Terminal support for claudecode
+				terminal = { enabled = true },
+				-- Handle large files
+				bigfile = { enabled = true },
+				-- Quick file loading
+				quickfile = { enabled = true },
+				-- Word highlighting
+				words = { enabled = true },
+				-- Status column disabled
+				statuscolumn = { enabled = false },
+				-- Smooth scrolling
+				scroll = {
+					enabled = true,
+					animate = {
+						duration = { step = 15, total = 150 },
+						easing = "linear",
+					},
+				},
+				-- Indent guides
+				indent = {
+					enabled = true,
+					indent = {
+						char = "│",
+						blank = " ",
+					},
+					scope = {
+						enabled = true,
+						char = "│",
+						underline = false,
+						only_current = false,
+					},
+				},
+				-- Input UI improvements
+				input = { enabled = true },
+				-- Git integration (lazygit)
+				lazygit = { enabled = true },
+
+				-- Snacks notifier as main notification system
+				notifier = {
+					enabled = true,
+					timeout = 3000,
+					width = { min = 40, max = 0.4 },
+					height = { min = 1, max = 0.6 },
+					margin = { top = 0, right = 1, bottom = 0 },
+					padding = true,
+					sort = { "level", "added" },
+					level = vim.log.levels.TRACE,
+					icons = {
+						error = " ",
+						warn = " ",
+						info = " ",
+						debug = " ",
+						trace = " ",
+					},
+					style = "fancy",
+					top_down = true,
+					date_format = "%R",
+					more_format = " ↓ %d more notifications",
+					refresh = 50,
+				},
+
+				-- Dashboard configuration
+				dashboard = {
+					enabled = true,
+					row = nil,
+					col = nil,
+					pane_gap = 6,
+					autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+					preset = {
+						keys = menu_items,
+						-- Header is handled by custom section below
+					},
+					formats = {
+						key = format_key,
+						icon = format_icon,
+					},
+					sections = {
+						{ section = "startup", padding = 1 },
+						-- Left pane: Image + Keys
+						{
+							pane = 1,
+							function()
+								return {
+									section = "terminal",
+									cmd = get_image_cmd(),
+									height = 20,
+									padding = 1,
+									ttl = 0, -- always re-run on refresh
+								}
+							end,
+							{ section = "keys", gap = 1, padding = 1 },
+						},
+						-- Right pane: Recent + Projects + Git
+						{
+							pane = 2,
+							{ icon = " ", title = "Recent Files", indent = 2, padding = 1 },
+							{ section = "recent_files", indent = 2, padding = 1, limit = 5 },
+							{ icon = " ", title = "Projects", indent = 2, padding = 1 },
+							{ section = "projects", indent = 2, padding = 1, limit = 5 },
+							{ icon = " ", title = "Git Status", indent = 2, padding = 1 },
+							{
+								section = "terminal",
+								cmd = "git status --short --branch --show-stash",
+								height = 5,
+								padding = 1,
+								ttl = 5 * 60,
+								indent = 3,
+							},
+						},
+					},
+				},
+			})
+
+			-- Helper function to refresh the dashboard
+			local function refresh_dashboard()
+				Snacks.dashboard.update()
+			end
+
+			-- Create user commands for image cycling
+			vim.api.nvim_create_user_command("SnacksDashboardImageNext", function()
+				ImgManager.next()
+				ImgManager.save_state()
+				refresh_dashboard()
+				vim.notify(
+					string.format(
+						"Image: %s (%d/%d)",
+						ImgManager.get_current_name(),
+						ImgManager.current_index,
+						ImgManager.get_count()
+					),
+					vim.log.levels.INFO
+				)
+			end, { desc = "Cycle to next image" })
+
+			vim.api.nvim_create_user_command("SnacksDashboardImagePrev", function()
+				ImgManager.prev()
+				ImgManager.save_state()
+				refresh_dashboard()
+				vim.notify(
+					string.format(
+						"Image: %s (%d/%d)",
+						ImgManager.get_current_name(),
+						ImgManager.current_index,
+						ImgManager.get_count()
+					),
+					vim.log.levels.INFO
+				)
+			end, { desc = "Cycle to previous image" })
+
+			vim.api.nvim_create_user_command("SnacksDashboardImageRandom", function()
+				ImgManager.random()
+				ImgManager.save_state()
+				refresh_dashboard()
+				vim.notify(
+					string.format(
+						"Image: %s (%d/%d)",
+						ImgManager.get_current_name(),
+						ImgManager.current_index,
+						ImgManager.get_count()
+					),
+					vim.log.levels.INFO
+				)
+			end, { desc = "Jump to random image" })
+
+			vim.api.nvim_create_user_command("SnacksDashboardImageName", function()
+				vim.notify(
+					string.format(
+						"Current image: %s (%d/%d)",
+						ImgManager.get_current_name(),
+						ImgManager.current_index,
+						ImgManager.get_count()
+					),
+					vim.log.levels.INFO
+				)
+			end, { desc = "Show current image name" })
+
+			-- Toggle dashboard command
+			vim.api.nvim_create_user_command("SnacksDashboard", function()
+				Snacks.dashboard()
+			end, { desc = "Open Snacks Dashboard" })
+
+			-- Notification history command
+			vim.api.nvim_create_user_command("NotificationHistory", function()
+				Snacks.notifier.show_history()
+			end, { desc = "Show notification history" })
+
+			-- Dismiss all notifications
+			vim.api.nvim_create_user_command("NotificationDismiss", function()
+				Snacks.notifier.hide()
+			end, { desc = "Dismiss all notifications" })
+
+			-- Set snacks notifier as the default vim.notify
+			vim.notify = Snacks.notifier.notify
+
+			-- Show startup stats after lazy loads (like old alpha footer)
+			vim.api.nvim_create_autocmd("User", {
+				once = true,
+				pattern = "LazyVimStarted",
+				callback = function()
+					local stats = require("lazy").stats()
+					local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+					vim.defer_fn(function()
+						vim.notify(
+							string.format("⚡ Loaded %d/%d plugins in %sms", stats.loaded, stats.count, ms),
+							vim.log.levels.INFO,
+							{ title = "Startup" }
+						)
+					end, 100)
+				end,
+			})
+
+			-- Check for plugin updates periodically and notify
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "LazyCheck",
+				callback = function()
+					local ok, lazy = pcall(require, "lazy")
+					if ok then
+						local updates = lazy.status().updates or 0
+						if updates > 0 then
+							vim.notify(
+								string.format("󰏔 %d plugin update(s) available", updates),
+								vim.log.levels.INFO,
+								{ title = "Lazy" }
+							)
+						end
+					end
+				end,
+			})
+		end,
+		keys = {
+			{
+				"<leader>h",
+				function()
+					require("snacks").dashboard()
+				end,
+				desc = "Home (Dashboard)",
+			},
+			{ "<leader>An", "<cmd>SnacksDashboardImageNext<cr>", desc = "Next image" },
+			{ "<leader>Ap", "<cmd>SnacksDashboardImagePrev<cr>", desc = "Previous image" },
+			{ "<leader>Ar", "<cmd>SnacksDashboardImageRandom<cr>", desc = "Random image" },
+			{ "<leader>Ai", "<cmd>SnacksDashboardImageName<cr>", desc = "Image info" },
+			{
+				"<leader>sn",
+				function()
+					require("snacks").notifier.show_history()
+				end,
+				desc = "Notification History",
+			},
+			{
+				"<leader>sN",
+				function()
+					require("snacks").notifier.hide()
+				end,
+				desc = "Dismiss Notifications",
 			},
 		},
 	},
