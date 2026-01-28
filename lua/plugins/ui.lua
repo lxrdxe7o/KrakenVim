@@ -187,7 +187,7 @@ return {
 				},
 				-- Indent guides
 				indent = {
-					enabled = true,
+					enabled = false,
 					indent = {
 						char = "│",
 						blank = " ",
