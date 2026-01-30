@@ -382,16 +382,13 @@ return {
 			vim.api.nvim_create_autocmd("User", {
 				pattern = "LazyCheck",
 				callback = function()
-					local ok, lazy = pcall(require, "lazy")
-					if ok then
-						local updates = lazy.status().updates or 0
-						if updates > 0 then
-							vim.notify(
-								string.format("󰏔 %d plugin update(s) available", updates),
-								vim.log.levels.INFO,
-								{ title = "Lazy" }
-							)
-						end
+					local ok, checker = pcall(require, "lazy.manage.checker")
+					if ok and checker.updated and #checker.updated > 0 then
+						vim.notify(
+							string.format("󰏔 %d plugin update(s) available", #checker.updated),
+							vim.log.levels.INFO,
+							{ title = "Lazy" }
+						)
 					end
 				end,
 			})

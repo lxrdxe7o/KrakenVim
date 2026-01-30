@@ -8,11 +8,8 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
     config = function()
-      -- In Neovim 0.10+, treesitter highlighting is built-in and enabled by default
-      -- We just need to ensure parsers are installed
-      
-      -- List of parsers to auto-install
-      local parsers = {
+      -- Install missing parsers asynchronously at startup
+      local wanted = {
         "bash", "c", "cpp", "css", "dockerfile", "gitcommit", "gitignore",
         "go", "gomod", "gosum", "html", "java", "javascript", "json",
         "json5", "jsonc", "lua", "luadoc", "markdown", "markdown_inline",
@@ -20,28 +17,21 @@ return {
         "toml", "tsx", "typescript", "vim", "vimdoc", "vue", "xml", "yaml",
       }
 
-      -- Auto-install parsers on first buffer read
+      local installed = require("nvim-treesitter.config").get_installed()
+      local to_install = vim.tbl_filter(function(p)
+        return not vim.tbl_contains(installed, p)
+      end, wanted)
+
+      if #to_install > 0 then
+        require("nvim-treesitter.install").install(to_install, { summary = true })
+      end
+
+      -- Enable treesitter-based highlighting and folding
       vim.api.nvim_create_autocmd("FileType", {
-        once = false,
         callback = function(args)
-          local ft = vim.bo[args.buf].filetype
-          local lang = vim.treesitter.language.get_lang(ft)
-          
-          if lang and vim.tbl_contains(parsers, lang) then
-            -- Check if parser is installed
-            local has_parser = pcall(vim.treesitter.language.inspect, lang)
-            if not has_parser then
-              vim.notify("Installing treesitter parser for " .. lang, vim.log.levels.INFO)
-              vim.cmd("TSInstall " .. lang)
-            end
-            
-            -- Enable highlighting for this buffer
-            pcall(vim.treesitter.start, args.buf, lang)
-          end
+          pcall(vim.treesitter.start, args.buf)
         end,
       })
-
-      -- Enable treesitter-based folding
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
       vim.opt.foldenable = false
