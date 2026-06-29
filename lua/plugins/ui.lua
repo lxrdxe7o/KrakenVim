@@ -123,9 +123,14 @@ return {
 		lazy = false,
 		config = function()
 			local ImgManager = require("utils.img_manager")
+			local AsciiLoader = require("ascii.loader")
 
-			-- Initialize image manager
+			-- Initialize managers
 			ImgManager.init()
+			AsciiLoader.setup()
+
+			-- Configuration: switch between "image" or "ascii" mode
+			local header_mode = "image" -- change to "ascii" to use ASCII headers
 
 			local Snacks = require("snacks")
 
@@ -138,8 +143,27 @@ return {
 				-- Use chafa to render image as colored unicode
 				-- --size restricts output dimensions (cols x rows)
 				-- --format symbols uses unicode block/braille characters
-				return string.format("chafa --size=48x20 --animate=off %q", img_path)
+				return string.format("chafa --format=symbols --size=80x20 --colors=full --animate=off %q", img_path)
 			end
+
+			-- Get ASCII header command
+			local function get_ascii_cmd()
+				return AsciiLoader.get_ascii_cmd()
+			end
+
+			-- Cycle to next header (works for both modes)
+			local function cycle_header()
+				if header_mode == "image" then
+					ImgManager.next()
+				else
+					AsciiLoader.next()
+				end
+				Snacks.dashboard._reset()
+			end
+
+			vim.api.nvim_create_user_command("CycleHeader", function()
+				cycle_header()
+			end, {})
 
 			-- Menu items with modern icons and styling
 			local menu_items = {
@@ -249,9 +273,10 @@ return {
 						{
 							pane = 1,
 							function()
+								local cmd = header_mode == "ascii" and get_ascii_cmd() or get_image_cmd()
 								return {
 									section = "terminal",
-									cmd = get_image_cmd(),
+									cmd = cmd,
 									height = 20,
 									padding = 1,
 									ttl = 0, -- always re-run on refresh

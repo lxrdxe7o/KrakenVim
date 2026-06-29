@@ -74,8 +74,8 @@
 - 🔧 **Auto-Formatting**: conform.nvim with 20+ formatters
 - 🔎 **Linting**: nvim-lint for real-time code quality checks
 - 🌊 **Smooth Animations**: Neoscroll for buttery scrolling
-- 📊 **Beautiful UI**: Custom statusline, bufferline, dashboard, and notifications
-- 🎨 **Custom Header System**: Cached ASCII art headers with instant loading and persistent state
+- 📊 **Beautiful UI**: Custom statusline, bufferline, dashboard (Snacks.nvim), and notifications
+- 🎨 **Custom Header System**: High-quality image headers (via Chafa) or cached ASCII art headers with instant loading and persistent state
 - 🎮 **Discord Presence**: Show your coding activity
 - ⏱️ **Pomodoro Timer**: Built-in productivity timer
 - 📝 **Note Taking**: Obsidian.nvim integration
@@ -93,13 +93,14 @@
 ### Dashboard
 
 ![Dashboard](assets/screenshots/dashboard.png)
-_Alpha dashboard with cycling ASCII art headers and quick actions_
+_Snacks dashboard with cycling image/ASCII art headers and quick actions_
 
 **Features:**
 
-- **11 Built-in Headers**: Anime artwork (8), logos (2), minimal designs (1)
-- **Header Cycling**: Navigate through headers with keybindings or dashboard button
-- **Persistent State**: Remembers your last selected header across sessions
+- **High-Quality Images**: High-resolution image rendering using `chafa`
+- **11 Built-in ASCII Headers**: Anime artwork (8), logos (2), minimal designs (1)
+- **Header Cycling**: Navigate through images/headers with keybindings or dashboard button
+- **Persistent State**: Remembers your last selected image/header across sessions
 - **Custom Headers**: Convert your own images to ASCII art with included script
 
 ### Code Editing
@@ -143,6 +144,9 @@ _Neo-tree file explorer with Git integration and file icons_
 ripgrep      # Fast grep alternative (required for fzf-lua live_grep)
 fd           # Fast find alternative (better file finding)
 fzf          # Fuzzy finder (fzf-lua uses native fzf for performance)
+
+# Dashboard
+chafa        # High-performance terminal image/graphics (required for image headers)
 
 # Git tools
 lazygit      # Terminal UI for Git (required for <leader>gg)
@@ -217,20 +221,20 @@ git clone https://github.com/lxrdxe7o/KrakenVim.git ~/.config/nvim
 **Arch Linux:**
 
 ```bash
-sudo pacman -S neovim git nodejs npm ripgrep fd lazygit make gcc
+sudo pacman -S neovim git nodejs npm ripgrep fd lazygit make gcc chafa
 ```
 
 **Ubuntu/Debian:**
 
 ```bash
 sudo apt update
-sudo apt install neovim git nodejs npm ripgrep fd-find make gcc
+sudo apt install neovim git nodejs npm ripgrep fd-find make gcc chafa
 ```
 
 **Fedora:**
 
 ```bash
-sudo dnf install neovim git nodejs npm ripgrep fd-find lazygit make gcc
+sudo dnf install neovim git nodejs npm ripgrep fd-find lazygit make gcc chafa
 ```
 
 #### Install a Nerd Font
@@ -278,13 +282,13 @@ git clone https://github.com/lxrdxe7o/KrakenVim.git "$env:LOCALAPPDATA\nvim"
 **Using Scoop:**
 
 ```powershell
-scoop install neovim git nodejs ripgrep fd lazygit make gcc
+scoop install neovim git nodejs ripgrep fd lazygit make gcc chafa
 ```
 
 **Using Chocolatey:**
 
 ```powershell
-choco install neovim git nodejs ripgrep fd lazygit make mingw
+choco install neovim git nodejs ripgrep fd lazygit make mingw chafa
 ```
 
 #### Install a Nerd Font
@@ -325,7 +329,7 @@ git clone https://github.com/lxrdxe7o/KrakenVim.git ~/.config/nvim
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install dependencies
-brew install neovim git node ripgrep fd lazygit
+brew install neovim git node ripgrep fd lazygit chafa
 ```
 
 #### Install a Nerd Font
@@ -353,7 +357,7 @@ On first launch, KrakenVim will:
 
 1. **Bootstrap lazy.nvim** - Plugin manager auto-installs
 2. **Install all plugins** - 60+ plugins downloaded and configured
-3. **Display Alpha dashboard** - Custom Kraken ASCII art
+3. **Display Snacks dashboard** - Custom Kraken ASCII art
 
 Wait for all plugins to install (check bottom-right notifications).
 
@@ -918,7 +922,7 @@ All themes configured with:
 
 | Plugin              | Purpose                                      |
 | ------------------- | -------------------------------------------- |
-| `alpha-nvim`        | Customizable dashboard with Kraken ASCII art |
+| `snacks.nvim`       | Dashboard, terminal, notifications, and more |
 | `lualine.nvim`      | Statusline with mode, Git, diagnostics, LSP  |
 | `bufferline.nvim`   | Buffer tabs with LSP diagnostics             |
 | `noice.nvim`        | Modern UI for messages, cmdline, popupmenu   |
@@ -934,7 +938,7 @@ All themes configured with:
 - Recent files
 - Find text
 - Config
-- **Next header** (cycle through ASCII art)
+- **Cycle Image** (cycle through image headers)
 - Lazy plugin manager
 - Quit
 
@@ -984,19 +988,19 @@ All themes configured with:
 | `gc`                     | V    | Comment selection                     |
 | `<M-j/k>`                | N, V | Move line/selection down/up           |
 | `<M-h/l>`                | N, V | Move line/selection left/right        |
-| `<leader>h`              | N    | Home (Alpha dashboard)                |
+| `<leader>h`              | N    | Home (Dashboard)                      |
 
 ---
 
-### Alpha Dashboard (`<leader>a`)
+### Dashboard (`<leader>h`, `<leader>A`)
 
-| Key          | Action                        |
-| ------------ | ----------------------------- |
-| `<leader>ah` | Open Alpha dashboard          |
-| `<leader>an` | Cycle to next header          |
-| `<leader>ap` | Cycle to previous header      |
-| `<leader>ar` | Jump to random header         |
-| `<leader>ai` | Show current header name/info |
+| Key          | Action                 |
+| ------------ | ---------------------- |
+| `<leader>h`  | Open dashboard         |
+| `<leader>An` | Cycle to next image    |
+| `<leader>Ap` | Cycle to prev image    |
+| `<leader>Ar` | Jump to random image   |
+| `<leader>Ai` | Show current image info|
 
 ---
 
@@ -1467,81 +1471,73 @@ All themes configured with:
 
 ---
 
-## 🎨 Alpha Dashboard Headers
+## 🎨 Dashboard Headers
 
-KrakenVim includes a **custom header cycling system** for the Alpha dashboard, allowing you to personalize your startup screen with different ASCII art designs.
+KrakenVim includes a **custom header cycling system** for the Snacks dashboard, allowing you to personalize your startup screen with high-quality images or ASCII art designs.
 
-### Built-in Headers (11 Total)
+### Image Dashboard (Default)
+
+The default mode uses `chafa` to render high-quality images directly in your terminal.
+
+- **Images Location**: `~/.config/nvim/img/`
+- **Supported Formats**: PNG, JPG, JPEG, GIF
+- **Resolution**: Optimized for 80x20 terminal grid with full color support
+
+### ASCII Headers Mode
+
+Alternatively, you can use traditional ASCII art headers. To switch to ASCII mode, edit `lua/plugins/ui.lua` and set `header_mode = "ascii"`.
 
 Headers are organized in categories under `~/.config/nvim/ascii/headers/`:
 
 #### Anime Category (8 headers)
 
-High-quality ANSI color artwork from alpha-ascii.nvim:
+High-quality ANSI color artwork:
 
-- **Abstract Portrait** - Colorful abstract face design (208KB)
-- **Black Cat** - Minimalist black cat silhouette (60KB)
-- **Blue Bubblegum** - Anime character blowing bubblegum (132KB)
-- **Calm Eyes** - Serene character portrait (240KB)
-- **Cat Girl** - Playful neko character (103KB)
-- **Color Eyes** - Vibrant eye-focused portrait (170KB)
-- **Girl Bandaged Eyes** - Mysterious bandaged character (147KB)
-- **Red JPA** - Red-themed Japanese art (223KB)
+- **Abstract Portrait** - Colorful abstract face design
+- **Black Cat** - Minimalist black cat silhouette
+- **Blue Bubblegum** - Anime character blowing bubblegum
+- **Calm Eyes** - Serene character portrait
+- **Cat Girl** - Playful neko character
+- **Color Eyes** - Vibrant eye-focused portrait
+- **Girl Bandaged Eyes** - Mysterious bandaged character
+- **Red JPA** - Red-themed Japanese art
 
 #### Logos Category (2 headers)
 
 - **KrakenVim** - Custom Kraken logo
 - **Neovim Official** - Standard Neovim logo
 
-#### Minimal Category (1 header)
-
-- **Simple Nvim** - Compact ASCII text logo
-
-#### Custom Category
-
-Empty directory for your own headers created with the image converter.
-
 ### Header Cycling
 
-Navigate through headers with these keybindings:
+Navigate through images/headers with these keybindings:
 
-| Key          | Action                        |
-| ------------ | ----------------------------- |
-| `<leader>ah` | Open Alpha dashboard          |
-| `<leader>an` | Cycle to next header          |
-| `<leader>ap` | Cycle to previous header      |
-| `<leader>ar` | Jump to random header         |
-| `<leader>ai` | Show current header name/info |
+| Key          | Action                 |
+| ------------ | ---------------------- |
+| `<leader>h`  | Open dashboard         |
+| `<leader>An` | Cycle to next header   |
+| `<leader>Ap` | Cycle to previous header|
+| `<leader>Ar` | Jump to random header  |
+| `<leader>Ai` | Show current header info|
 
-Or use the **"Next header"** button (press `i`) directly on the dashboard.
+Or use the **"Cycle Image"** button (press `i`) directly on the dashboard.
 
 ### Features
 
-- ✅ **Persistent State**: Remembers your last selected header across Neovim sessions
-- ✅ **ANSI Color Support**: Full-color headers with 16M colors (terminal support required)
-- ✅ **On-Demand Loading**: Headers loaded only when cycled (saves memory)
-- ✅ **Wraparound Navigation**: Seamlessly cycle from last to first and vice versa
-- ✅ **Format Support**: Both simple (plain text) and advanced (ANSI color) formats
+- ✅ **High-Resolution Graphics**: Uses `chafa` symbols for detailed terminal rendering
+- ✅ **Persistent State**: Remembers your last selected image/header across Neovim sessions
+- ✅ **ANSI Color Support**: Full-color support for both images and ASCII art
+- ✅ **On-Demand Loading**: Only the current header is loaded into memory
 
-### Creating Custom Headers
+### Creating Custom ASCII Headers
 
-KrakenVim includes a script to convert your images to ASCII art:
+KrakenVim includes a script to convert your images to ASCII art for the ASCII mode:
 
 #### Requirements
 
 ```bash
 # Install libcaca for image conversion
-# Ubuntu/Debian
-sudo apt install caca-utils
-
-# Arch
-sudo pacman -S libcaca
-
-# macOS
-brew install libcaca
-
-# Fedora
-sudo dnf install libcaca
+# Ubuntu/Debian: sudo apt install caca-utils
+# Arch: sudo pacman -S libcaca
 ```
 
 #### Usage
@@ -1549,149 +1545,23 @@ sudo dnf install libcaca
 ```bash
 # Basic usage (creates 48x24 ASCII with colors)
 ./scripts/img2ascii.sh path/to/image.png my_header_name
-
-# Custom size
-./scripts/img2ascii.sh path/to/image.png my_header_name 60 30
-
-# Examples with different formats
-./scripts/img2ascii.sh avatar.jpg my_avatar        # JPG support
-./scripts/img2ascii.sh logo.png company_logo 40 20 # Custom dimensions
-./scripts/img2ascii.sh art.gif cool_art            # GIF support
 ```
 
-The script will:
-
-1. Convert your image to ASCII with ANSI colors
-2. Create a Lua file at `ascii/headers/custom/my_header_name.lua`
-3. Automatically make it available in the header rotation
-
-#### Script Parameters
-
-- **image_path** (required) - Path to PNG/JPG/GIF image
-- **name** (required) - Header name (used in filename and display)
-- **width** (optional) - Character width (default: 48)
-- **height** (optional) - Line height (default: 24)
-
-#### Configuration
-
-The script uses these `img2txt` settings:
-
-- **Format**: UTF-8 with ANSI colors
-- **Dithering**: Ordered4 (balanced quality)
-- **Size**: 48x24 by default (matches alpha-ascii headers)
-
-#### Tips for Best Results
-
-1. **Image Selection**:
-
-   - High contrast images work best
-   - Simple subjects (logos, portraits) better than complex scenes
-   - Square or landscape orientations recommended
-
-2. **Size Guidelines**:
-
-   - Default 48x24 fits most terminals
-   - Larger sizes (60x30) for high-resolution displays
-   - Smaller sizes (40x20) for compact dashboards
-
-3. **Color Terminals**:
-   - Requires 24-bit color support (most modern terminals)
-   - Test with: `echo $COLORTERM` (should show "truecolor" or "24bit")
-   - If colors don't show, headers still work in monochrome
-
-### Manual Header Creation
-
-You can also create headers manually in two formats:
-
-#### Simple Format (Plain Text)
-
-```lua
--- ascii/headers/custom/my_header.lua
-local header = {
-    "  ███╗   ██╗██╗   ██╗██╗███╗   ███╗",
-    "  ████╗  ██║██║   ██║██║████╗ ████║",
-    "  ██╔██╗ ██║██║   ██║██║██╔████╔██║",
-    "  ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║",
-    "  ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║",
-    "  ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝",
-}
-return { header = header }
-```
-
-#### Advanced Format (With Colors)
-
-```lua
--- ascii/headers/custom/colored_header.lua
--- Define highlight groups
-vim.api.nvim_set_hl(0, "MyRed", { fg = "#ff0000" })
-vim.api.nvim_set_hl(0, "MyBlue", { fg = "#0000ff" })
-
-local header = {
-    type = "text",
-    val = {
-        "  Line 1 of ASCII art",
-        "  Line 2 of ASCII art",
-    },
-    opts = {
-        position = "center",
-        hl = {
-            { { "MyRed", 0, 10 }, { "MyBlue", 10, 20 } },  -- Line 1 colors
-            { { "MyBlue", 0, 10 }, { "MyRed", 10, 20 } },  -- Line 2 colors
-        }
-    }
-}
-return { header = header }
-```
-
-### Header Manager Configuration
-
-Advanced users can customize the header system in `lua/utils/header_manager.lua`:
-
-```lua
-M.config = {
-    headers_path = vim.fn.stdpath("config") .. "/ascii/headers",
-    cache_file = vim.fn.stdpath("config") .. "/ascii/cache/header_index.json",
-    state_file = vim.fn.stdpath("config") .. "/.nvim_state/last_header.txt",
-    max_width = 48,           -- Maximum character width
-    max_height = 24,          -- Maximum line height
-    remember_last = true,     -- Remember last header (disable for random)
-    random_on_start = false,  -- Start with random header instead of last
-}
-```
-
-**Performance Note**: Headers are cached in a JSON index file. The cache auto-invalidates when headers are modified. To manually rebuild:
-
-```vim
-:HeaderCacheRebuild
-```
+The script will generate a Lua file at `ascii/headers/custom/my_header_name.lua`.
 
 ### Troubleshooting Headers
 
-#### Headers Don't Change
+#### Graphics Not Showing Correctly
 
-- Restart Neovim to reload the configuration
-- Check `:messages` for Lua errors
-- Verify commands exist: `:command AlphaHeader<Tab>`
+- Ensure `chafa` is installed (`chafa --version`)
+- Check that your terminal supports 24-bit color (`echo $COLORTERM`)
+- If images look broken, try reducing your terminal font size or increasing window size
 
-#### Colors Don't Show
+#### Custom Image Not Appearing
 
-- Check terminal supports 24-bit color: `echo $COLORTERM`
-- Try a different terminal emulator (Alacritty, Kitty, WezTerm)
-- Headers still work without colors (monochrome fallback)
-
-#### Image Conversion Fails
-
-- Install libcaca: `sudo apt install caca-utils`
-- Check image path is correct
-- Try different image format (PNG works best)
-- Reduce dimensions if terminal is small
-
-#### Custom Header Not Appearing
-
-- Verify file is in `ascii/headers/custom/`
-- Check filename ends with `.lua`
-- Ensure file returns `{ header = {...} }` table
-- Reload Neovim or run `:lua require('utils.header_manager').init()`
+- Place your images in the `~/.config/nvim/img/` directory
+- Restart Neovim or run `:CycleHeader` to refresh the list
+- Ensure the file extension is supported (.jpg, .png, .gif)
 
 ---
 
